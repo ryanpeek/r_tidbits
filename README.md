@@ -1,2 +1,5 @@
-# r_tidbits
-packages, code snippets, and R things that may or may not gather dust
+# *`r_tidbits`*
+
+R packages, R code snippets, and things that may or may not gather dust
+
+Just a place to put stuff instead of random notes/tabs.
