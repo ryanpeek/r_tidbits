@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 .DS_Store
+
+
+# ignore large data
+data/*.zip
+data/*geodatabase/
