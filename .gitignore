@@ -8,3 +8,4 @@
 # ignore large data
 data/*.zip
 data/*geodatabase/
+data/*h5
