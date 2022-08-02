@@ -11,7 +11,7 @@ library(ggspatial)
 library(showtext)
 
 # Source helper functions
-source("~/Downloads/orientation_helpers.R")
+source("scripts/orientation_helpers.R")
 
 # Set up fonts for plots
 font_add_google('Source Sans Pro', regular.wt = 300, bold.wt = 700)
