@@ -6,6 +6,6 @@
 
 
 # ignore large data
-data/*.zip
-data/*geodatabase/
-data/*h5
+data_raw/*.zip
+data_raw/*geodatabase/
+data_raw/*h5
