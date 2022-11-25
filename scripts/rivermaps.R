@@ -45,6 +45,20 @@ eu_rivs <- eu_rivers[cntry,]
 
 # plot(eu_rivs$Shape)
 
+# Pull Watersheds ---------------------------------------------------------
+
+db <- "/Users/rapeek/Documents/spatial_data/ATLAS/BasinATLAS_Data_v10.gdb/BasinATLAS_v10.gdb/"
+
+st_layers(db)
+
+# try level 6 first
+watersheds <- st_read(db, "BasinATLAS_v10_lev07")
+
+# crop to country
+watersheds_crop <- watersheds[eu_rivs,]
+
+mapview::mapview(watersheds_crop)
+
 # Get HydroData River Widths -----------------------------------------------------------
 eu_rivs <- eu_rivs %>%
   mutate(width = as.numeric(ORD_FLOW),

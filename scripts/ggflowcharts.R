@@ -83,7 +83,7 @@ p
 
 # add title
 (p <- p +
-  labs(title = "The Goldilocks Decision Tree",
+  labs(title = "The Goldilocks \nDecision Tree",
        caption = "N. Rennie\n\nData: Robert Southey. Goldilocks and the Three Bears.
        1837.\n\nImage: New York Public Library\n\n#30DayChartChallenge"))
 
@@ -102,3 +102,18 @@ p
         plot.caption = element_text(family = "henny", hjust = 0,
                                     size = 10, color = "#585c45",
                                     margin = margin(t = 10))))
+
+
+p
+
+
+# Add Image ---------------------------------------------------------------
+
+library(magick)
+bears <- image_read("https://nrennie.rbind.io/blog/2022-06-06-creating-flowcharts-with-ggplot2/img.jpg?raw=true") #%>%
+  #image_resize("200x300")
+
+library(cowplot)
+ggdraw(p) +
+  draw_image(bears, x = 0.32, y = 0.2, scale = 0.4)
+
