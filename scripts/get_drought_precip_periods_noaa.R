@@ -41,4 +41,9 @@ dat_out <- dat_out %>%
   mutate(county_code = substr(gsub("https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/county/time-series/", "", path), 4,6)) %>%
   select(-path) %>%
   left_join(cntys)
+# convert to dates
+dat_out <- dat_out %>%
+  mutate(date = ymd(paste(Date,"01")))
 
+# plot
+ggplot() + geom_line(data=dat_out, aes(x=date, y=Anomaly))
