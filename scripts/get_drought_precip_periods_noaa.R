@@ -47,3 +47,4 @@ dat_out <- dat_out %>%
 
 # plot
 ggplot() + geom_line(data=dat_out, aes(x=date, y=Anomaly))
+
