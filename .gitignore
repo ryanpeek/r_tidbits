@@ -9,3 +9,6 @@
 data_raw/*.zip
 data_raw/*geodatabase/
 data_raw/*h5
+data_out/tahoe*
+data_raw/lt*
+data_raw/phalzer*
