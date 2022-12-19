@@ -44,3 +44,5 @@ con <- DBI::dbConnect(RMySQL::MySQL(),
                       host="path_to_db",
                       user="itsme",
                       password="pw")
+
+query
