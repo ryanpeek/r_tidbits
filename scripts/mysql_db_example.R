@@ -17,7 +17,14 @@ tbl(myConn, "taxonomy") %>%
   filter(ncbi_id == 10116)
 
 # count
+tbl(myConn, "taxonomy") %>% select(ncbi_id) %>% distinct()
 tbl(myConn, "taxonomy") %>% select(ncbi_id) %>% distinct() %>% tally()
+
+# now query based on a list of ids
+tst <- tbl(myConn, "taxonomy") |>
+  filter(ncbi_id %in% c(926989, 691330, 887038, 346191, 1072202))
+
+show_query(tst)
 
 # Alternate ---------------------------------------------------------------
 # from here: https://tavareshugo.github.io/data_carpentry_extras/dbplyr_ensembl/dbplyr_ensembl.html

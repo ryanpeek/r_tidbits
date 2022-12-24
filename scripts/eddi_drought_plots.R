@@ -33,21 +33,24 @@ border <- st_union(wus) %>%
 # Get Data: STARS ------------------------------------------------------------
 
 # date
-stdate <- "2021-06-01"
-time_int <- "1 month"
+stdate <- "2022-12-01"
+time_int <- "6 month"
 
 # get monthly data
 drdat <- get_eddi(date = stdate, timescale = time_int)
 plot(drdat)
-#tst <- stars::read_stars('ftp://ftp.cdc.noaa.gov/Projects/EDDI/CONUS_archive/data/2019/EDDI_ETrs_01mn_20191001.asc')
+
+# crop to CA/OR border
 drtrim <- crop(drdat, as(border, "Spatial")) # this trims to bbox of interest
-#drmask <- mask(drtrim, as(border, "Spatial"))
 plot(drtrim)
-raster::writeRaster(drtrim, filename = glue("data/eddi_{stdate}_monthly_raster.tif"), overwrite=TRUE)
+
+# save it out
+#raster::writeRaster(drtrim, filename = glue("data/eddi_{stdate}_monthly_raster.tif"), overwrite=TRUE)
 
 # convert to stars
 drtrim <- st_as_stars(drtrim)
 plot(drtrim)
+
 # mask by border
 bb <- st_bbox(border)
 drtrim <- drtrim[border]
@@ -55,25 +58,24 @@ drtrim <- drtrim[border]
 # convert to sf polys: (merge polygons that have identical pixel values w merge=TRUE)
 eddi_sfdf <- st_as_sf(drtrim, as_points = FALSE, merge = FALSE)
 plot(eddi_sfdf)
-saveRDS(eddi_sfdf, file = here::here(glue("data/eddi_{stdate}_monthly_sfpoly.rds")))
+
+# save out
+#saveRDS(eddi_sfdf, file = here::here(glue("data/eddi_{stdate}_monthly_sfpoly.rds")))
 
 # convert to sf x.sf = st_xy2sfc(x, as_points = TRUE)
 eddi_sfxy <- st_xy2sfc(drtrim, as_points = TRUE)
 plot(eddi_sfxy)
-saveRDS(eddi_sfxy, file = here::here(glue("data/eddi_{stdate}_monthly_sfxy.rds")))
+#saveRDS(eddi_sfxy, file = here::here(glue("data/eddi_{stdate}_monthly_sfxy.rds")))
 
 # convert to dataframe
 eddi_spdf <- as.data.frame(drtrim)
 colnames(eddi_spdf) <- c("x", "y", "value")
 summary(eddi_spdf)
-ggplot() + geom_tile(data=eddi_spdf, aes(x=x, y=y, fill=value)) + viridis::scale_fill_viridis(option = "A")
+ggplot() + geom_tile(data=eddi_spdf, aes(x=x, y=y, fill=value)) +
+  viridis::scale_fill_viridis(option = "A")
 
 # save out
-saveRDS(eddi_spdf, file = here::here(glue("data/eddi_{stdate}_monthly_spdf.rds")))
-
-# test plot
-#ggplot() + geom_tile(data=eddi_spdf, aes(x=x, y=y, fill=value)) + viridis::scale_fill_viridis(option = "A")
-
+# saveRDS(eddi_spdf, file = here::here(glue("data/eddi_{stdate}_monthly_spdf.rds")))
 
 # GGPLOT ------------------------------------------------------------------
 
