@@ -37,3 +37,10 @@ ffcAPIClient::evaluate_gage_alteration(gage_id = 11427000,
                                        token = ffctoken,
                                        plot_output_folder = "data_out/nfa_gage_alteration")
 
+
+# try just step one: ----------------------------
+
+ffc <- FFCProcessor$new()
+ffc$step_one_functional_flow_results(gage_id=11336000,
+                                     token=ffctoken,
+                                     output_folder = "C:/Users/RPeek/Downloads/ffc_test")
