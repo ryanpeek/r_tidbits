@@ -8,6 +8,8 @@ library(readr)
 library(purrr)
 library(lubridate)
 library(tigris)
+library(ggplot2)
+library(ggdark)
 
 
 # Path --------------------------------------------------------------------
@@ -17,19 +19,19 @@ library(tigris)
 # list of counties
 cntys <- list_counties("CA")
 
-county_sel <- c("El Dorado", "Kern")
+county_sel <- c("Sacramento", "El Dorado")
 cnty <- filter(cntys, county %in% county_sel) %>%
   pull(county_code)
 
 # years
-yr_start <- 1895
+yr_start <- 2000 # can start 1895
 yr_end <- 2022
 
 # month
 mon <- 08
 
 # interval: 1-12 mon, 18,24, 36, 48, 60
-interval <- 48
+interval <- 24
 
 # build url for county CA
 make_url <- glue("https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/county/time-series/CA-{cnty}/pcp/{interval}/{mon}/{yr_start}-{yr_end}.csv?base_prd=true&begbaseyear={yr_start}&endbaseyear={yr_end}&filter=true&filterType=binomial")
