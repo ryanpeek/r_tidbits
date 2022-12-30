@@ -68,13 +68,15 @@ df <- read_csv(glue("{file_recent$path}"))
 
 # clean AND RENAME
 df_clean <- df %>%
-  rename(date = Date) %>%
+  rename(date = Date, water_year=waterYear) %>%
   mutate(year = year(date), month = month(date),
-         water_year = year(date) + ifelse(month(date) >= 10, 1, 0),
+         #water_year = year(date) + ifelse(month(date) >= 10, 1, 0),
          water_day = (date - as.Date(sprintf('%s-10-01', water_year)))) %>%
   group_by(water_year) %>%
-  mutate(water_day = as.numeric(water_day - min(water_day) + 1)) %>%
-  ungroup()
+  mutate(water_day = as.numeric(water_day - min(water_day) + 1),
+         Flow_cms = Flow * 0.0283168) %>%
+  ungroup() |>
+  select(site_no, date, month, water_year, water_day, Flow, Flow_cms, Flow_cd, agency_cd)
 
 
 # Water Stats -------------------------------------------------------------
@@ -97,16 +99,31 @@ df_ts <- df_clean %>%
 df_cov <- pk.cov(df_ts)
 
 # same as this:
-# tst <- df_clean %>% group_by(hyear) %>% summarize(totvol=cumsum(Flow)/sum(Flow)) %>% bind_cols(., df_clean[,c(10,3,5)])
+tst <- df_clean %>%
+  group_by(water_year) %>%
+  summarize(totvol=cumsum(Flow_cms)/sum(Flow_cms)) %>%
+  bind_cols(., df_clean[,c(1:2, 5, 6:7)])
 
 
 # VISUALIZE ---------------------------------------------------------------
 
-# plot all with current year and prev 2 yrs:
+## cumulative flow volume by year-------------
+
+plotly::ggplotly(
+
+  ggplot() + geom_line(data=tst, aes(x=water_day, y=totvol,group=water_year, color=water_year)) +
+    ggdark::dark_theme_classic(base_family = "Roboto Condensed") +
+    theme(axis.text.x = element_text(angle=60, hjust=1))+
+    scale_color_viridis_c() +
+    labs(x="Day of water year", y="Total Volume")
+)
+
+
+## plot all with current year and prev 2 yrs----------------
 (p1<-ggplot(data=df_ts) +
    geom_line(aes(x=hdoy, y=Flow, group=hyear), color="gray", alpha=0.8, lwd=0.3) +
    geom_line(data=df_ts %>% filter(hyear>=year(Sys.Date())+1),
-             aes(x=hdoy, y=Flow), color="steelblue", lwd=2) +
+             aes(x=hdoy, y=Flow), color="steelblue", linewidth=2) +
    # add drought years
    geom_line(data=df_ts %>% filter(hyear==2017),
              aes(x=hdoy, y=Flow), color="darkblue", lwd=0.5) +
@@ -126,16 +143,13 @@ df_cov <- pk.cov(df_ts)
         x="Day of Water Year", y="Flow (cms)"))
 
 
-# Drought Vis -------------------------------------------------------------
+## drought severity --------------------------------------
 
-# look at drought severity:
 df_drought <- FlowScreen::dr.seas(df_ts, WinSize = 30, Season = 1:12)
 df_drought$hyear <- year(attr(df_drought$StartDay, "times"))
 
 # get quantiles
 #(thresh <- df_ts %>% filter(hyear==2017) %>% group_by(hyear) %>% summarize(quants = quantile(Flow, 0.2, na.rm=TRUE)))
-
-## Drought Plots ---------------------------------------------------------
 
 # drought metrics
 ggplot(data=df_drought) +
@@ -148,23 +162,35 @@ ggplot(data=df_drought) +
   labs(title="Start and end of significant droughts", y="Water Year",
        x="Day of Water Year",
        subtitle="Severity of drought based on 30-day window using a flow duration curve (Beyene et al. 2014)")
+
 # save
 #ggsave(filename = "output/figure_drought_periods.png",
 #       dpi=200, width=10, height = 6.5)
 
-# center of volume plot
+
+
+## center of volume plot ----------------------------------------
+
 (plot_cov <-
-    ggplot() +
-    geom_point(data=df_cov, aes(y=hYear, x=Q50),
-               pch=21, size=3, alpha=0.5,
-               color="orange", fill="gray70",show.legend=TRUE) +
-    geom_vline(xintercept=150, color="steelblue", lty=2) +
-    scale_fill_viridis_d("Water Year\n Type") +
-    scale_color_viridis_d("Water Year\n Type") +
-    scale_y_continuous(breaks = seq(1940, year(Sys.Date()),4)) +
-    hrbrthemes::theme_ft_rc() +
-    labs(subtitle = "NFA Center of Volume",
-         y="Water Year", x="Day of year for 50% of tot. ann streamflow")
+   ggplot() +
+   geom_point(data=df_cov, aes(y=hYear, x=Q50, fill=Dur),
+              pch=21, size=3,
+              color="gray20",show.legend=TRUE) +
+   # add drought years
+   geom_point(data=df_cov %>%
+                filter(hYear %in% c(2014:2016, 2020:2022)),
+              aes(y=hYear, x=Q50, fill=Dur),
+              pch=21, size=3,
+              color="white",show.legend=TRUE) +
+
+   geom_vline(xintercept=150, color="steelblue", lty=2) +
+   scale_fill_viridis_c("Duration", option = "B") +
+   #scale_color_viridis_d("Water Year\n Type") +
+   scale_y_continuous(breaks = seq(1942, year(Sys.Date()),4)) +
+   hrbrthemes::theme_ft_rc() +
+   labs(title = "NFA Center of Volume (50% of total annual streamflow)",
+        y="Water Year", x="Day of year",
+        subtitle="Duration in days between the 25 percent and 75 percent total annual streamflow")
 )
 
 
