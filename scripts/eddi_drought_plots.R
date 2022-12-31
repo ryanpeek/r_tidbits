@@ -33,8 +33,8 @@ border <- st_union(wus) %>%
 # Get Data: STARS ------------------------------------------------------------
 
 # date
-stdate <- "2022-12-01"
-time_int <- "6 month"
+stdate <- "2022-12-26"
+time_int <- "1 month"
 
 # get monthly data
 drdat <- get_eddi(date = stdate, timescale = time_int)
@@ -84,7 +84,7 @@ ggplot() + geom_tile(data=eddi_spdf, aes(x=x, y=y, fill=value)) +
   geom_tile(data = eddi_spdf, aes(x, y, fill = value)) +
   geom_sf(data = wus, fill = NA, color = "#b2b2b2", size = 0.125) +
   geom_sf(data = border, fill = NA, color = "white", size = .25) +
-  scale_fill_viridis_c(name = "EDDI", option = "A") +
+  scale_fill_viridis_c(name = "EDDI", option = "A", limits=c(-2,2)) +
   coord_sf(crs = 4326, datum = NA) +
   guides(fill = guide_colourbar(title.position = "top")) +
   labs(
