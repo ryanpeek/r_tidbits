@@ -120,19 +120,20 @@ plotly::ggplotly(
 
 
 ## plot all with current year and prev 2 yrs----------------
+
 (p1<-ggplot(data=df_ts) +
    geom_line(aes(x=hdoy, y=Flow, group=hyear), color="gray", alpha=0.8, lwd=0.3) +
    geom_line(data=df_ts %>% filter(hyear>=year(Sys.Date())+1),
              aes(x=hdoy, y=Flow), color="steelblue", linewidth=2) +
    # add drought years
    geom_line(data=df_ts %>% filter(hyear==2017),
-             aes(x=hdoy, y=Flow), color="darkblue", lwd=0.5) +
+             aes(x=hdoy, y=Flow), color="darkblue", linewidth=0.5) +
    geom_line(data=df_ts %>% filter(hyear==2020),
-             aes(x=hdoy, y=Flow), color="red4", lwd=0.5) +
+             aes(x=hdoy, y=Flow), color="red4", linewidth=0.5) +
    geom_line(data=df_ts %>% filter(hyear==2021),
-             aes(x=hdoy, y=Flow), color="maroon", lwd=0.5) +
+             aes(x=hdoy, y=Flow), color="maroon", linewidth=0.5) +
    geom_line(data=df_ts %>% filter(hyear==2022),
-             aes(x=hdoy, y=Flow), color="brown3", lwd=0.5) +
+             aes(x=hdoy, y=Flow), color="brown3", linewidth=0.5) +
    geom_point(data=df_ts %>% filter(hyear>=year(Sys.Date())+1) %>%
                 slice_max(hdoy, n = 1),
               aes(x=hdoy, y=Flow), pch=21, size=4, fill="orange") +
@@ -193,4 +194,42 @@ ggplot(data=df_drought) +
         subtitle="Duration in days between the 25 percent and 75 percent total annual streamflow")
 )
 
+plotly::ggplotly(plot_cov)
 
+
+# Look at high flows ------------------------------------------------------
+
+n17 <- readNWISuv(siteNo, "00060", startDate = "2016-10-01", endDate = "2017-09-29") %>%
+  renameNWISColumns() %>%
+  addWaterYear() %>%
+  mutate(dowy=wateRshedTools::dowy(dateTime))
+
+nnow <- readNWISuv(siteNo, "00060", startDate = "2022-10-01") %>%
+  renameNWISColumns() %>%
+  addWaterYear() %>%
+  mutate(dowy=wateRshedTools::dowy(dateTime))
+
+# plot w labels
+
+# set up labels
+lab1 <- n17 %>% slice_max(order_by = Flow_Inst, n=1) %>%
+  mutate(label = " Flows over **20,000 cfs**<br>have occurred 20 times since 1965.<br>This was the 9th highest flow on record")
+
+ggplot() + geom_line(data=n17, aes(x=dateTime, y=Flow_Inst, color=Flow_Inst), show.legend = FALSE)+
+  geom_point(data=n17 %>% slice_max(order_by = Flow_Inst, n=1), aes(x=dateTime, y=Flow_Inst), pch=21, fill="skyblue", size=3)+
+  ggtext::geom_richtext(data=lab1, aes(x=dateTime, y=Flow_Inst, label=label),
+                        hjust = -0.1, vjust=1, size=2.5, fill = NA, label.color = NA) +
+  geom_line(data=nnow, aes(x=dateTime, y=Flow_Inst, color=Flow_Inst), show.legend = FALSE)+
+  geom_point(data=nnow %>% slice_tail(n=1), aes(x=dateTime, y=Flow_Inst), pch=21, fill="skyblue", size=3)+
+  scale_color_gradientn("cfs", colors=MetBrewer::met.brewer("Isfahan1")) +
+  facet_wrap(~waterYear, scales = "free_x") +
+  hrbrthemes::theme_ipsum_ps() +
+  labs(x="", y="Flow (cfs)", subtitle = "NF American River (water years)", caption="(@riverpeek) Data from USGS gage 1142700")
+
+ggsave(filename = "figs/nfa_2017_vs_current.png", width = 11, height = 8, dpi=300, bg = "white")
+
+# find max
+n17 %>%
+  group_by(dowy) %>%
+  summarize(maxflow = max(Flow_Inst)) %>%
+  slice_max(order_by = maxflow, n=3)
