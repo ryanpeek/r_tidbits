@@ -108,15 +108,18 @@ tst <- df_clean %>%
 # VISUALIZE ---------------------------------------------------------------
 
 ## cumulative flow volume by year-------------
+library(geomtextpath)
+#plotly::ggplotly(
 
-plotly::ggplotly(
-
-  ggplot() + geom_line(data=tst, aes(x=water_day, y=totvol,group=water_year, color=water_year)) +
+  ggplot() +
+    geom_line(data=tst, aes(x=water_day, y=totvol,group=water_year, color=water_year)) +
+    geom_textpath(data=tst |> filter(water_year> 2022), aes(x=water_day, y=totvol, label=water_year), color="skyblue", vjust=-0.2, hjust=0.9)+
+    geom_textpath(data=tst |> filter(water_year == 1997), aes(x=water_day, y=totvol, label=water_year), color="skyblue", vjust=-0.2, hjust=0.5)+
     ggdark::dark_theme_classic(base_family = "Roboto Condensed") +
     theme(axis.text.x = element_text(angle=60, hjust=1))+
-    scale_color_viridis_c() +
+    scale_color_viridis_c("Water Year") +
     labs(x="Day of water year", y="Total Volume")
-)
+#)
 
 
 ## plot all with current year and prev 2 yrs----------------
