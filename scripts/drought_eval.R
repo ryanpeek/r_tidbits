@@ -225,7 +225,7 @@ ggplot(data=df_drought) +
        subtitle="Severity of drought based on 30-day window using a flow duration curve (Beyene et al. 2014)")
 
 # save
-ggsave(filename = "output/figure_drought_periods.png",
+ggsave(filename = "figs/figure_drought_periods.png",
        dpi=200, width=10, height = 6.5)
 
 
