@@ -82,4 +82,35 @@ write_rds(cd_ca, "data_out/climdiv_ca.rds")
 
 # Now Pull Data -----------------------------------------------------------
 
+# climate division data
 
+curr_pcp <- "https://www.ncei.noaa.gov/pub/data/cirs/climdiv/climdiv-pcpndv-v1.0.0-20221206"
+
+dat_out <- rio::import(curr_pcp, format = "tsv",
+                       colClasses=c("character", rep("numeric",12)))
+# rename
+colnames(dat_out) <- c("id",month.abb)
+
+# separate (see here: https://www.ncei.noaa.gov/pub/data/cirs/climdiv/divisional-readme.txt)
+dat_out <- dat_out %>%
+  mutate(state_fips = substr(id, 1,2),
+         climdiv = substr(id, 3,4),
+         data_code = substr(id, 5, 6),
+         year = as.integer(substr(id, 7,11))) %>%
+  relocate(state_fips:year, .after = id)
+
+# filter to CA climate regs
+climdiv_ca$CD_2DIG
+
+# precip only
+dat_ca <- dat_out %>% filter(state_fips=="04")
+table(dat_ca$climdiv)
+
+# plot by climate div
+g1 <- ggplot() + geom_sf(data=cd_ca) + geom_sf_label(data=cd_ca, aes(label=CD_2DIG))
+g2 <- ggplot() + geom_line(data=dat_ca, aes(x=year, y=Jan, color=climdiv), show.legend = FALSE) +
+  facet_wrap(~climdiv)
+
+library(patchwork)
+g2 + inset_element(g1, left = 0.6, bottom = -0.1, right = 1, top = 0.3)
+wrap_plots(g2, g1)
