@@ -23,7 +23,7 @@ v <- rnaturalearth::ne_states(country = glue("{cntry}")) |>
 
 # get a county
 state_sel <- "CA"
-cnty_sel <- c("Tulare", "Fresno")
+cnty_sel <- c("Placer", "El Dorado")
 cnty <- counties(state = c(glue("{state_sel}")))
 cnty_a <- cnty %>% filter(NAME %in% c(glue("{cnty_sel}")))
 
@@ -52,7 +52,7 @@ r_xy <- rename(r_xy, "val"=2)
 ggplot() + geom_tile(data=r_xy, aes(x=x, y=y, fill=val)) +
   scale_fill_viridis_c("Light Intensity", option="A") +
   theme_ft_rc(base_family = "Cinzel Decorative") +
-  labs(title=glue("Lights in {cnty_sel} County, {state_sel}"), y="", x="")
+  labs(title=glue("Lights in {glue_collapse({cnty_sel}, ', ', last=' and ')} County, {state_sel}"), y="", x="")
 
 ggsave(filename = glue("figs/lights_in_{cnty_sel}_county.png"), dpi=300,
        width = 10, height = 8)
