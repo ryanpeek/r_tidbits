@@ -440,3 +440,70 @@ ggplot() +
     #)
   #) +
   hrbrthemes::theme_ft_rc(base_family = "Roboto Slab")
+
+
+
+# Chinese Constellations --------------------------------------------------
+
+const_cn <- load_celestial("constellations.lines.cn.min.geojson")
+
+# Cut and prepare for geom_glowpath() on a single step
+const_cn_end_lines <- sf_spherical_cut(const_cn,
+                                       the_buff = hemisphere_s2,
+                                       # Change the crs
+                                       the_crs = target_crs,
+                                       flip = flip_matrix
+) %>%
+  # To paths
+  st_cast("MULTILINESTRING") %>%
+  st_coordinates() %>%
+  as.data.frame()
+
+
+ggplot() +
+  # Graticules
+  geom_sf(data = grat_end, color = "grey60", linewidth = 0.25, alpha = 0.3) +
+  # A blurry Milky Way
+  with_blur(
+    geom_sf(
+      data = mw_end, aes(fill = fill), alpha = 0.1, color = NA,
+      show.legend = FALSE
+    ),
+    sigma = 8
+  ) +
+  scale_fill_identity() +
+  # Glowing stars
+  geom_glowpoint(
+    data = stars_end, aes(
+      alpha = br, size =
+        br, geometry = geometry
+    ),
+    color = "white", show.legend = FALSE, stat = "sf_coordinates"
+  ) +
+  scale_size_continuous(range = c(0.05, 0.75)) +
+  scale_alpha_continuous(range = c(0.1, 0.5)) +
+  # Glowing constellations
+  geom_glowpath(
+    data = const_cn_end_lines, aes(X, Y, group = interaction(L1, L2)),
+    color = "white", size = 0.5, alpha = 0.8, shadowsize = 0.4, shadowalpha = 0.01,
+    shadowcolor = "white", linejoin = "round", lineend = "round"
+  ) +
+  # Border of the sphere
+  geom_sf(data = hemisphere_sf, fill = NA, color = "white", linewidth = 1.25) +
+  # Caption
+  labs(caption = caption, x="", y="") +
+  # And end with theming
+  theme_void() +
+  hrbrthemes::theme_ft_rc(base_family = "Roboto Slab")
+  # theme(
+  #   text = element_text(colour = "white"),
+  #   panel.border = element_blank(),
+  #   plot.background = element_rect(fill = "#191d29", color = "#191d29"),
+  #   plot.margin = margin(20, 20, 20, 20),
+  #   plot.caption = element_text(
+  #     hjust = 0.5, face = "bold",
+  #     size = rel(1),
+  #     lineheight = rel(1.2),
+  #     margin = margin(t = 40, b = 20)
+  #   )
+  # )
