@@ -132,25 +132,31 @@ showtext_auto()
 
 ggplot(hotspots %>% filter(gistar > 0))+ # pvalue < 0.05)) +
   geom_sf(data = ca, fill = "#E5E6E8", color = "#868D94") +
-  geom_sf(data=hotspots %>% filter(gistar > 0,  pvalue < 0.05), aes(colour = gistar, fill = gistar)) +
+  geom_sf(data=ca_cntys, col="gray", fill=alpha("gray10", 0))+
+  geom_sf(data=lica_ca, col="forestgreen", alpha=0.1, size=0.7, pch=1)+
+  geom_sf(data=hotspots %>% filter(gistar > 0,  pvalue < 0.05), aes(colour = gistar, fill = gistar), alpha=0.9) +
   geom_sf(data=hotspots %>% filter(gistar > 0,  pvalue > 0.05),
           aes( fill = gistar), alpha=0.2, color=alpha("gray40", 0.5)) +
   scale_fill_stepsn(colors = MetBrewer::met.brewer("Tam"), limits = c(0, 30), breaks = seq(0, 30, 5)) +
   scale_color_stepsn(colors = MetBrewer::met.brewer("Tam"), limits = c(0, 30), breaks = seq(0, 30, 5)) +
   coord_sf(crs = "+proj=aea +lat_1=25 +lat_2=50 +lon_0=-100") +
-  labs(title = "Bullfrog hotspots") +
-  hrbrthemes::theme_modern_rc(base_family = f1, axis_text_size = 8) +
+  labs(title = "American Bullfrog hotspots",
+       caption = glue("Data: iNaturalist {{rinat}}, updated {Sys.Date()}")) +
+  theme_void(base_family = f1, base_size = 20) +
+  #hrbrthemes::theme_modern_rc(base_family = f1) +
   theme(
     #plot.background = element_rect(fill = "#868D94", color = NA),
-    #plot.title = element_markdown(size = 18, color = "grey85"),
+    plot.title = element_markdown(size = 34),
     #axis.text = element_text(size = 2),
     legend.key.height = unit(2, "lines"),
     legend.key.width = unit(0.8, "lines"),
     legend.title = element_blank(),
-    legend.text = element_text(size = 13, color = "white", family = f2)
+    legend.text = element_text(size = 14, color = "gray40", family = f2)
   )
 
 
+ggsave(filename = "figs/bullfrog_hotspots_via_iNat.png",
+       width = 8.5, dpi = 300, bg = "white")
 
 
 hotspot_plot <- function(df, title) {
