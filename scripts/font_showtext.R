@@ -1,20 +1,33 @@
 # text stuff
 library(dplyr)
 library(ggplot2)
+library(glue)
 library(palmerpenguins)
 library(showtext)
 showtext_opts(dpi=300)
+
 # list all font paths on local computer
 font_paths()
 
+# add a new path
+# font_paths(new = r"(C:\Users\RPeek\AppData\Local\Microsoft\Windows\Fonts)")
+
+# pick a font
+fnt_to_add <- "Titillium" # Caveat
+
 # search for a font name or family
-font_files() %>% filter(grepl("Atkinson", ps_name))
-font_files() %>% filter(grepl("Roboto", family))
+font_files() %>% filter(grepl(fnt_to_add, ps_name))
+font_files() %>% filter(grepl(fnt_to_add, family))
+
+# ttf name
+(ttf <- font_files() %>% filter(grepl(fnt_to_add, ps_name)) %>%
+    select(file) %>%
+    filter(grepl("Regular", file)))
+
 # add locally
-#font_add(family = "Atkinson Hyperlegible", regular = "Atkinson-Hyperlegible-Regular-102.ttf")
+font_add(family = fnt_to_add, regular = glue("{ttf}"))
 
 # add straight from google
-fnt_to_add <- "Caveat"
 font_add_google(fnt_to_add)
 
 # call this for all future plots, else _begin and _end
