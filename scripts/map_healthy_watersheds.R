@@ -10,10 +10,9 @@
 
 library(sf)
 library(glue)
-library(showtext)
-showtext_opts(dpi=300)
-# font_paths()
-#library(extrafont)
+#library(showtext)
+#showtext_opts(dpi=300)
+library(extrafont)
 #font_import(pattern = "Atkinson")
 # run once to import all fonts to R: font_import(prompt=FALSE)
 library(tidyverse)
@@ -86,7 +85,7 @@ mapview(hw_df_cropped, zcol="CA_MMIs_wMod_csv_NormWatershedVulnerability") # che
 #font_add(family = "Roboto Condensed", regular = "RobotoCondensed-Regular.ttf")
 #font_files() %>% filter(grepl("Atkinson", ps_name))
 #font_files() %>% filter(grepl("Roboto Condensed", family))
-showtext::showtext_auto()
+#showtext::showtext_auto()
 
 #extrafont::loadfonts(quiet=TRUE)
 (main_map <- hw_df %>% filter(PSARegion %in% c(region_sel)) %>%
