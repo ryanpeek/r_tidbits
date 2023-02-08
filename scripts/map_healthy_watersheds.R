@@ -10,11 +10,15 @@
 
 library(sf)
 library(glue)
+
+# text madness
 #library(showtext)
 #showtext_opts(dpi=300)
+
 library(extrafont)
-#font_import(pattern = "Atkinson")
 # run once to import all fonts to R: font_import(prompt=FALSE)
+# extrafont::loadfonts(quiet=TRUE)
+
 library(tidyverse)
 library(geoarrow)
 library(mapview)
@@ -80,14 +84,13 @@ mapview(hw_df_cropped, zcol="CA_MMIs_wMod_csv_NormWatershedVulnerability") # che
 
 
 # Make a Nice Map ---------------------------------------------------------
-# deal with fonts
-#font_add(family = "Atkinson Hyperlegible", regular = "Atkinson-Hyperlegible-Regular-102.ttf")
-#font_add(family = "Roboto Condensed", regular = "RobotoCondensed-Regular.ttf")
+
+# if using the showtext package, sometimes need to add the path and then add font locally
 #font_files() %>% filter(grepl("Atkinson", ps_name))
-#font_files() %>% filter(grepl("Roboto Condensed", family))
+#font_add(family = "Atkinson Hyperlegible", regular = "Atkinson-Hyperlegible-Regular-102.ttf")
 #showtext::showtext_auto()
 
-#extrafont::loadfonts(quiet=TRUE)
+# Main Plot
 (main_map <- hw_df %>% filter(PSARegion %in% c(region_sel)) %>%
     ggplot() +
     geom_sf(
@@ -125,7 +128,6 @@ mapview(hw_df_cropped, zcol="CA_MMIs_wMod_csv_NormWatershedVulnerability") # che
 
 
 # Make Circular Plot ------------------------------------------------------
-#extrafont::loadfonts(quiet=TRUE)
 
 (circ_plot <- hw_df_cropped %>%
    ggplot() +
@@ -160,16 +162,11 @@ library(patchwork)
                          on_top = TRUE))
 
 # save pdf
-ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra.pdf",
+ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra_w.pdf",
        device = cairo_pdf, bg="white",
        width = 8.5, height = 10)
 
-# osx
-ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra1.png",
+# png
+ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra.png",
        bg="white", dpi=300, device = "png",
        width = 8.5, height = 10, units = "in")
-
-# windows works, but drops title in osx
-ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra.png",
-      type="cairo", dpi=300,
-      width = 8.5, height = 10, units = "in")
