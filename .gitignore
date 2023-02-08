@@ -3,7 +3,7 @@
 .RData
 .Ruserdata
 .DS_Store
-
+.Rprofile
 
 # ignore large data
 data_raw/*.zip

@@ -1,4 +1,5 @@
 # healthy watersheds
+# full report here: https://www.mywaterquality.ca.gov/monitoring_council/healthy_streams/docs/ca_hw_report_111213.pdf
 
 library(sf)
 library(glue)
