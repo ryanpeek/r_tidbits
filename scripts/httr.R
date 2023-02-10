@@ -79,5 +79,5 @@ dat_dsci_max_yr <- dat_dsci_sum %>% ungroup() %>%
 ggplot() + geom_line(data=dat_dsci_sum, aes(x=date, y=dsci_wysum, color=county), show.legend=FALSE) +
   theme_classic()
 
-ggplot() + geom_point(data=dat_dsci_max_yr, aes(x=wyear, y=dsci_summax, color=county), show.legend=FALSE) +
+ggplot() + geom_line(data=dat_dsci_max_yr, aes(x=wyear, y=dsci_summax, color=county), show.legend=FALSE) +
   theme_classic() + facet_wrap(~county)
