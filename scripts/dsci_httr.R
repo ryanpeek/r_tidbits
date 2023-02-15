@@ -124,7 +124,7 @@ ggplot() + geom_line(data=dsci_sum, aes(x=date, y=dsci_wy_sum, color=dsci_wy_max
   scale_color_viridis_c("DSCI", option = 1)+
   theme_classic(base_family = "Roboto Condensed") +
   labs(y="Cumulative DSCI (Max Annual)", x="", caption="DSCI 2000-2023")+
-  facet_wrap(~county_nm)
+  facet_wrap(region~county_nm)
 
 
 # plot by max per year
@@ -138,7 +138,7 @@ dsci_sum %>%
   #scale_color_viridis_c("DSCI", option = "H")+
   theme_classic(base_family = "Roboto Condensed") +
   labs(y="Cumulative DSCI (Max Annual)", x="", caption="DSCI 2000-2023") +
-  theme_classic() + facet_wrap(~county_nm)
+  theme_classic() + facet_wrap(region~county_nm)
 
 
 # calculate quantiles
@@ -161,12 +161,12 @@ ggplot() +
   theme(legend.position = "bottom")+
   labs(y="Cumulative DSCI (Max Annual)", x="",
        title="Top 5% Extreme Drought Years by County based on Cumulative DSCI") +
-  facet_wrap(~county_nm)
-
+  facet_wrap(~region)
+ # facet_wrap(region~county_nm)
 
 # calc mean DSCI by month and then sum
 dsci_mon_sum <- dsci %>%
-  group_by(county_nm, wyear, mon, fips) %>%
+  group_by(county_nm, region, wyear, mon, fips) %>%
   summarize(dsci_mon_avg = mean(dsci),
          dsci_mon_sum = cumsum(dsci),
          dsci_mon_max = max(dsci_mon_sum)) %>%
@@ -174,21 +174,82 @@ dsci_mon_sum <- dsci %>%
   # add quantiles %>%
   mutate(lbound05 = quantile(dsci_mon_max, 0.05),
          ubound95 = quantile(dsci_mon_max, 0.95),
-         ymon = glue("{wyear}-{mon}"))
+         ymon_dec = wyear+(1/as.integer(mon))) # add year mon decimal
 
 # plot by max by month
-dsci_mon_sum %>%
+ggmax <- dsci_mon_sum %>%
   ggplot() +
-  geom_point(aes(x=ymon, y=dsci_mon_max, color=dsci_mon_max), show.legend=FALSE, size=1, alpha=0.7) +
-  geom_smooth(aes(x=ymon, y=dsci_mon_max, group=county_nm), show.legend=FALSE, color="gray20", alpha=0.2, linewidth=0.5, se = FALSE, fill=alpha("gray80", 0.1)) +
+  geom_point(aes(x=ymon_dec, y=dsci_mon_max, color=dsci_mon_max), show.legend=FALSE, size=1, alpha=0.7) +
+  geom_smooth(aes(x=ymon_dec, y=dsci_mon_max, group=county_nm), show.legend=FALSE, color="gray20", alpha=0.2, linewidth=0.5, se = FALSE, fill=alpha("gray80", 0.1)) +
   colorspace::scale_color_continuous_diverging(palette = "Blue-Red 2", mid = 1000)+
-  #scale_color_viridis_c("DSCI", option = "H")+
+  #scale_color_viridis_c("DSCI", option = "H")
   theme_classic(base_family = "Roboto Condensed") +
   labs(y="Cumulative DSCI (Max Monthly)", x="", caption="DSCI 2000-2023") +
-  theme_classic() + facet_wrap(~county_nm)
+  theme_classic() + facet_wrap(~region)
+ggmax
+
+# Pull in PDSI ------------------------------------------------------------
+
+# match regions with counties:
+#cdivs <- read_csv("https://www.ncei.noaa.gov/pub/data/cirs/climdiv/county-to-climdivs.txt", skip=2)
+cdivs <- data.table::fread("data_raw/county-to-climdivs.txt", skip=3)
+
+# CA regions: 04 + 01-07
+# palmer drought severity (PDSI)
+cregions <- 1:7
+pdsi_path <- glue("https://www.ncei.noaa.gov/access/monitoring/weekly-palmers/pdi-040{region}.csv")
+tst <- read_csv("data_raw/pdi-0402.csv", skip = 1, col_names = c("date", "pdsi")) %>%
+  mutate(date = ymd(date),
+         cregion= "2")
+
+# all at once
+#tst <- read_csv(pdsi_path, skip = 1, col_names = c("date", "pdsi"), id = "cdivs" ) %>%
+#  mutate(date = ymd(date))
+
+# plot(tst$date, tst$pdsi)
+# aggregate to same timeframe
+tst <- tst %>%
+  mutate(year = year(date),
+         wyear = dataRetrieval::calcWaterYear(date),
+         wyday = add_wyd(date),
+         mon = month(date),
+         ymon_dec = wyear+(1/as.integer(mon)))
+
+tst_agg <- tst %>% group_by(ymon_dec) %>%
+  summarize(mean_pdsi = mean(pdsi, na.rm=TRUE)) %>% ungroup()
+
+# plot
+gg_pdsi <- ggplot() +
+  geom_point(data=tst_agg, aes(x=ymon_dec, y=mean_pdsi, color=mean_pdsi), show.legend=FALSE, size=3, alpha=0.7) +
+  #geom_smooth(data=tst_agg, aes(x=ymon_dec, y=mean_pdsi, color=mean_pdsi), show.legend=FALSE, size=1, alpha=0.2) +
+  colorspace::scale_color_continuous_diverging(palette = "Blue-Red 2", mid = -1)+
+  theme_classic(base_family = "Roboto Condensed") +
+  labs(y="Mean PDSI", x="", caption="PDSI 2005-2023") +
+  theme_classic()
+gg_pdsi
+library(patchwork)
+ggmax / gg_pdsi
+
+# Pull in PDHI ------------------------------------------------------------
+
+# palmer drought hydrological index (PDHI)
+# path: "https://www.ncei.noaa.gov/access/monitoring/weekly-palmers/phd-0402.csv"
 
 
+# Get SPI -----------------------------------------------------------------
 
+#spi12mon <- "https://www.ncei.noaa.gov/monitoring-content/temp-and-precip/drought/nadm/indices/spi/data/12mon-spi-us.txt"
+
+spi12mon <- r"(C:\Users\RPeek\Downloads\12mon-spi-us.txt)"
+
+spi12_df <- data.table::fread(spi12mon)
+names(spi12_df) <- c("div", "v2", "year", "jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec")
+
+spi12_df <- spi12_df %>% select(-v2) %>%
+  pivot_longer(c(jan:dec),names_to="month", values_to = "spi12") %>%
+  mutate(month2 = factor(month, levels=c(tolower(month.abb))))
+
+table(spi12_df$month2)
 # break by region and plot!
 # aggregate each measure for a given region and then plot
 # look at anomaly from mean?
