@@ -7,6 +7,7 @@ library(glue)
 library(janitor)
 library(tigris)
 source("scripts/f_water_year.R")
+source("scripts/f_get_fonts.R")
 
 # Set a Path Parameters ----------------------------
 
@@ -104,13 +105,25 @@ dsci <- dm_clean %>%
   ungroup() %>%
   left_join(ca_dfw, by="fips")
 
+# Plot By Month -----------------------------------------------------------
+
+# get fonts
+#f_get_fonts(fnt_pr = 4)
+f_get_fonts("Century Gothic", "Roboto Condensed")
+#f_get_fonts("Lato", "Atkinson Hyperlegible")
+
+# GET a plot
 ggplot() +
   geom_violin(data=dsci, aes(x=mon, y=dsci, fill=as.factor(region)),color=NA, alpha=0.7) +
   geom_boxplot(data=dsci, aes(x=mon, y=dsci, fill=as.factor(region)), color="gray60",
                outlier.alpha = 0, outlier.size = NA, coef=0, alpha=0.7) +
   scale_fill_viridis_d("Region", option = "F")+
-  theme_classic(base_family = "Roboto Condensed") +
+  theme_classic(base_family = fnt_header) +
   facet_wrap(as.factor(region)~.)
+
+
+# Calculate by Year -------------------------------------------------------
+
 
 # calc cumulative DSCI by year
 dsci_sum <- dsci %>%
@@ -122,12 +135,12 @@ dsci_sum <- dsci %>%
 # plot by county
 ggplot() + geom_line(data=dsci_sum, aes(x=date, y=dsci_wy_sum, color=dsci_wy_max), show.legend=FALSE) +
   scale_color_viridis_c("DSCI", option = 1)+
-  theme_classic(base_family = "Roboto Condensed") +
+  theme_classic(base_family = fnt_text) +
   labs(y="Cumulative DSCI (Max Annual)", x="", caption="DSCI 2000-2023")+
+  theme(strip.text = element_text(size=8))+
   facet_wrap(~county_nm)
 
-
-# plot by max per year
+# plot by max per year: all counties
 dsci_sum %>%
   select(wyear, fips, county_nm, region, dsci_wy_max) %>%
   distinct(.keep_all = TRUE) %>% #View()
@@ -136,10 +149,40 @@ dsci_sum %>%
   geom_smooth(aes(x=wyear, y=dsci_wy_max, group=county_nm), show.legend=FALSE, color="gray20", alpha=0.2, linewidth=0.5, se = FALSE, fill=alpha("gray80", 0.1)) +
   colorspace::scale_color_continuous_diverging(palette = "Blue-Red 2", mid = 8000)+
   #scale_color_viridis_c("DSCI", option = "H")+
-  theme_classic(base_family = "Roboto Condensed") +
-  labs(y="Cumulative DSCI (Max Annual)", x="", caption="DSCI 2000-2023") +
-  theme_classic() + facet_wrap(~county_nm)
+  theme_classic(base_family = fnt_header) +
+  theme(
+    strip.text = element_text(fnt_text, size=7),
+    axis.text.y = element_text(size=6, fnt_text),
+    axis.text.x = element_text(size=6, angle=90, hjust=1, fnt_text))+
+  labs(y="Cumulative DSCI (Max Annual)", x="", caption="DSCI 2000-2023") + facet_wrap(~county_nm)
 
+# plot by max per year: by region
+dsci_sum %>%
+  select(wyear, fips, county_nm, region, dsci_wy_max) %>%
+  distinct(.keep_all = TRUE) %>%
+  filter(region == 1) %>%
+  ggplot() +
+  geom_point(aes(x=wyear, y=dsci_wy_max, color=dsci_wy_max), show.legend=FALSE) +
+  geom_smooth(aes(x=wyear, y=dsci_wy_max, group=county_nm), show.legend=FALSE, color="gray20", alpha=0.2, linewidth=0.5, se = FALSE, fill=alpha("gray80", 0.1)) +
+  colorspace::scale_color_continuous_diverging(palette = "Blue-Red 2", mid = 8000)+
+  #scale_color_viridis_c("DSCI", option = "H")+
+  labs(y="Cumulative DSCI (Max Annual)",
+       x="", title="Maximum Annual DSCI: Region 1",
+       caption="DSCI 2000-2023") +
+  theme_classic(base_family = fnt_header) +
+  theme(
+    plot.title = element_text(face="bold"),
+    plot.caption = element_text(size=9, family = fnt_text),
+    axis.text.y = element_text(size=8, family = fnt_text),
+    axis.text.x = element_text(size=8, family = fnt_text, angle=90, hjust=0.5, vjust=0.5))+
+  facet_wrap(~county_nm)
+
+# save?
+#ggsave(filename = "figs/max_annual_dsci_cnty_region_1.png",
+#       width = 10, height = 8, dpi=300, units="in")
+
+
+# Calculate Quantiles -----------------------------------------------------
 
 # calculate quantiles
 dsci_ann_quant <- dsci_sum %>%
@@ -152,24 +195,25 @@ dsci_ann_quant <- dsci_sum %>%
 
 # which vals fall outside of this?
 outliers <- dsci_ann_quant[which(dsci_ann_quant$dsci_wy_max > dsci_ann_quant$ubound95),]
+
+# plot quantiles
 ggplot() +
   geom_point(data=dsci_ann_quant, aes(x=wyear, y=dsci_wy_max), color="gray70",alpha=0.4, show.legend=FALSE) +
   geom_point(data=outliers, aes(x=wyear, y=dsci_wy_max, fill=as.factor(wyear)), pch=21, size=3, show.legend=TRUE) +
   #colorspace::scale_fill_continuous_diverging(palette = "Blue-Red 2", mid = 8000)+
   ggthemes::scale_fill_colorblind("WY")+
-  theme_classic(base_family = "Roboto Condensed") +
+  theme_classic(base_family = fnt_header) +
   theme(legend.position = "bottom")+
   labs(y="Cumulative DSCI (Max Annual)", x="",
        title="Top 5% Extreme Drought Years by County based on Cumulative DSCI") +
   facet_wrap(~county_nm)
 
-
 # calc mean DSCI by month and then sum
 dsci_mon_sum <- dsci %>%
   group_by(county_nm, wyear, mon, fips) %>%
   summarize(dsci_mon_avg = mean(dsci),
-         dsci_mon_sum = cumsum(dsci),
-         dsci_mon_max = max(dsci_mon_sum)) %>%
+            dsci_mon_sum = cumsum(dsci),
+            dsci_mon_max = max(dsci_mon_sum)) %>%
   ungroup() %>%
   # add quantiles %>%
   mutate(lbound05 = quantile(dsci_mon_max, 0.05),
@@ -177,20 +221,87 @@ dsci_mon_sum <- dsci %>%
          ymon = glue("{wyear}-{mon}"))
 
 # plot by max by month
-dsci_mon_sum %>%
+(ggpmax <- dsci_mon_sum %>%
   ggplot() +
   geom_point(aes(x=ymon, y=dsci_mon_max, color=dsci_mon_max), show.legend=FALSE, size=1, alpha=0.7) +
   geom_smooth(aes(x=ymon, y=dsci_mon_max, group=county_nm), show.legend=FALSE, color="gray20", alpha=0.2, linewidth=0.5, se = FALSE, fill=alpha("gray80", 0.1)) +
   colorspace::scale_color_continuous_diverging(palette = "Blue-Red 2", mid = 1000)+
   #scale_color_viridis_c("DSCI", option = "H")+
-  theme_classic(base_family = "Roboto Condensed") +
+  theme_classic(base_family = fnt_header) +
   labs(y="Cumulative DSCI (Max Monthly)", x="", caption="DSCI 2000-2023") +
-  theme_classic() + facet_wrap(~county_nm)
+  theme_classic() + facet_wrap(~county_nm))
 
 
+# Pull in PDSI ------------------------------------------------------------
 
-# break by region and plot!
-# aggregate each measure for a given region and then plot
-# look at anomaly from mean?
+# match regions with counties:
+#cdivs <- read_csv("https://www.ncei.noaa.gov/pub/data/cirs/climdiv/county-to-climdivs.txt", skip=2)
+cdivs <- data.table::fread("data_raw/county-to-climdivs.txt", skip=3)
 
-# calc the anomaly
+# CA regions: 04 + 01-07
+# palmer drought severity (PDSI)
+cregions <- 1:7
+pdsi_path <- glue("https://www.ncei.noaa.gov/access/monitoring/weekly-palmers/pdi-040{cregions}.csv")
+tst <- read_csv("data_raw/pdi-0402.csv", skip = 1, col_names = c("date", "pdsi")) %>%
+  mutate(date = ymd(date),
+         cregion= "2")
+
+# all at once
+tst <- read_csv(pdsi_path, skip = 1, col_names = c("date", "pdsi"), id = "cdivs" ) %>%  mutate(date = ymd(date))
+
+# plot(tst$date, tst$pdsi)
+# aggregate to same timeframe
+tst <- tst %>%
+  mutate(year = year(date),
+         wyear = dataRetrieval::calcWaterYear(date),
+         wyday = add_wyd(date),
+         mon = month(date),
+         ymon_dec = wyear+(1/as.integer(mon)))
+
+tst_agg <- tst %>% group_by(ymon_dec) %>%
+  summarize(mean_pdsi = mean(pdsi, na.rm=TRUE)) %>% ungroup()
+
+# plot
+gg_pdsi <- ggplot() +
+  geom_point(data=tst_agg, aes(x=ymon_dec, y=mean_pdsi, color=mean_pdsi), show.legend=FALSE, size=3, alpha=0.7) +
+  #geom_smooth(data=tst_agg, aes(x=ymon_dec, y=mean_pdsi, color=mean_pdsi), show.legend=FALSE, size=1, alpha=0.2) +
+  colorspace::scale_color_continuous_diverging(palette = "Blue-Red 2", mid = -1)+
+  theme_classic(base_family = "Roboto Condensed") +
+  labs(y="Mean PDSI", x="", caption="PDSI 2005-2023") +
+  theme_classic()
+
+library(patchwork)
+ggpmax / gg_pdsi
+
+# Pull in PDHI ------------------------------------------------------------
+
+# palmer drought hydrological index (PDHI)
+# path: "https://www.ncei.noaa.gov/access/monitoring/weekly-palmers/phd-0402.csv"
+
+
+# Get SPI -----------------------------------------------------------------
+
+#spi12mon <- "https://www.ncei.noaa.gov/monitoring-content/temp-and-precip/drought/nadm/indices/spi/data/12mon-spi-us.txt"
+
+spi12mon <- r"(C:\Users\RPeek\Downloads\12mon-spi-us.txt)"
+
+spi12_df <- data.table::fread(spi12mon)
+names(spi12_df) <- c("div", "v2", "year", "jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec")
+
+spi12_df <- spi12_df %>% select(-v2) %>%
+  pivot_longer(c(jan:dec),names_to="month", values_to = "spi12") %>%
+  mutate(month2 = factor(month, levels=c(tolower(month.abb))))
+
+table(spi12_df$month2)
+
+# Anomaly? -----------------------------------------------------------------
+
+# calc the anomaly:
+#library(anomalize) #tidy anomaly detectiom
+#https://towardsdatascience.com/tidy-anomaly-detection-using-r-82a0c776d523
+# https://business-science.github.io/timetk/articles/TK08_Automatic_Anomaly_Detection.html
+#library(timetk)
+#walmart_sales_weekly %>%
+#  group_by(Store, Dept) %>%
+#  plot_anomaly_diagnostics(Date, Weekly_Sales, .facet_ncol = 2)
+
