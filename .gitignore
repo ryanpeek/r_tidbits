@@ -15,3 +15,5 @@ data_raw/phalzer*
 data_raw/2023_snowtiles_demo*
 data_raw/Amtrak_*
 data_raw/*parquet
+data_raw/*tif
+data_raw/*rds

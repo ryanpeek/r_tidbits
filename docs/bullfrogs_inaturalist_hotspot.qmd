@@ -1,0 +1,649 @@
+---
+title: "iNaturalist Bullfrog Assessment"
+date: "`r Sys.Date()`"
+params: 
+  watershed: "Yuba"
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    toc-title: Contents
+    code-overflow: wrap
+    code-fold: true
+    code-tools: true
+    code-block-bg: true
+    code-block-border-left: "#31BAE9"
+    theme: journal #litera #default
+    highlight-style: arrow
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+A complete spatial analysis from beginning to end looking at species observations from iNaturalist, binning these data by county or watershed, and finally, looking at spatial patterns in the data (hotspots). In this case, let's look at observations through time for American Bullfrogs, an invasive species in California.
+
+# Getting Boundaries
+
+First we want to create a spatial object as a boundary box for use in searching iNaturalist. For this example we will grab three different datasets, all available via packages or online. Let's load some base packages first and setup boundaries.
+
+```{r setup}
+#| echo: false
+#| hide: true
+#| warning: false
+#| message: false
+#| results: false
+
+library(here)
+source(here("scripts/f_get_fonts.R"))
+
+# set fonts depending on system:
+font1 <- if(get_os()=="windows"){
+  "Century Gothic"
+} else {
+  "Atkinson Hyperlegible"
+}
+font2 <- "Roboto Condensed"
+
+# load fonts
+f_get_fonts(font1, font2)
+
+# get logo
+logo <- "docs/img/rabo_frog_icon.png"
+img_png <- png::readPNG(here(glue("{logo}")), native = TRUE)
+img_png <- grid::rasterGrob(img_png, interpolate = TRUE) # change
+#logo_in <- magick::image_read(logo)
+
+dfw_cols <- c("#292F6D", "#1E718F", "#9DC63B", "#3B7B3B", "#194A27",
+              "#131448", "#335FAC", "#472E1D", "#954922", "#A57630" )
+
+dfw_accents <- c("#E6E7E8", "#D1D3D4", "#939598", "#808285", "#58595B",
+                 "#414042", "#282829", "#551543", "#D77328", "#045070",
+                 "#0A1E25")
+
+
+# now load libraries
+library(tidyverse)
+library(lubridate)
+library(glue)
+library(sf)
+library(tigris)
+options(tigris_use_cache = TRUE)
+library(mapview)
+mapviewOptions(fgb=FALSE)
+
+date_retrieved <- "20230311"
+nhd_hucs <- !file.exists(here::here("data_raw/nhd_huc12.parquet"))
+bullfrog <- !file.exists(here::here(glue("data_raw/bullfrog_inat_ca_{date_retrieved}.rds")))
+
+```
+
+## A Starting Boundary: States & Counties
+
+First we want to get a CA boundary, in an {`sf`} format. Depending on the need, we may want to choose a different boundary layer. For our purposes, the broadest boundary (the {`tigris`} layer) has the best outline on the land side and a buffered ocean side. 
+
+```{r caMap}
+#| echo: true
+#| code-fold: true
+#| message: false
+#| warning: false
+
+# using the tigris package, filter by state name
+library(tigris)
+ca1 <- tigris::states(progress_bar=FALSE) %>% filter(NAME=="California")
+# pryr::object_size(ca1) # 213.46 kB
+
+```
+
+Let's also grab county boundaries for use in summarizing data later. 
+
+```{r counties}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| column: margin
+#| fig-cap: "CA map"
+
+ca_cntys <- tigris::counties("CA", progress_bar=FALSE)
+
+# set as the boundary
+plot(ca_cntys$geometry, border="gray")
+plot(ca1$geometry, border="gray10", lwd=2, add=TRUE)
+
+```
+
+
+# Getting iNaturalist Data
+
+Next we want to download some species data for a given species, as observed by folks via the [**iNaturalist**](https://www.inaturalist.org/) app or website. Thankfully there's a great API package that allows us to easily import this data directly into R, the {[`rinat`](https://docs.ropensci.org/rinat/)} package. Another package handy for looking at occurrence data is {[`spocc`](https://docs.ropensci.org/spocc/index.html)} from ROpenSci.
+
+```{r rinat}
+#| echo: true
+#| eval: !expr bullfrog
+#| message: false
+#| warning: false
+
+library(rinat)
+library(ggplot2)
+
+lica <- get_inat_obs(query="Bullfrog", bounds = ca1, geo = TRUE, maxresults = 9999)
+
+```
+
+Then we can filter and convert to {sf} format. We need to drop any missing X/Y points first, and join data to counties.
+
+```{r convertSF}
+#| echo: true
+#| eval: !expr bullfrog
+
+lica_sf <- lica %>% 
+  filter(!is.na(latitude)) %>% 
+  st_as_sf(coords=c("longitude", "latitude"), remove=FALSE, crs=4326)
+
+# save out for later
+write_rds(lica_sf, 
+          file=here(glue("data_raw/bullfrog_inat_ca_{format(Sys.Date(),'%Y%m%d')}.rds")))
+
+```
+
+```{r read-iNat}
+#| echo: false
+#| eval: true
+
+lica_sf <- readr::read_rds(here(glue("data_raw/bullfrog_inat_ca_{date_retrieved}.rds"))) %>% ungroup()
+
+```
+
+## Plot by Year or County
+
+Here we can plot the data by year observed and county. More data has been reported over recent years, so trends may not necessarily correlate with range expansion, rather addition of records.
+
+
+```{r inatPlot2}
+#| echo: true
+#| eval: true
+#| error: false
+#| column: page
+#| out-width: 120%
+#| warning: false
+#| message: false
+
+# trim to just CA
+lica_ca <- lica_sf[st_transform(ca1, st_crs(lica_sf)),]
+
+# add the county data
+lica_ca <- st_join(st_transform(lica_ca, 4269), ca_cntys[,c(1:6)]) %>% 
+    mutate(observed_on = ymd(observed_on),
+           year = year(observed_on))
+
+# plot
+ggplot() +
+  geom_sf(data=lica_ca %>% filter(year>2010), alpha=0.5, col="green4", cex=0.9) +
+  geom_sf(data=ca1, fill=NA) +
+    theme_minimal(base_family = font1) +
+  labs(title="Bullfrog observations from iNat") +
+  theme(axis.text = element_text(family=font2)) + 
+  facet_wrap(.~year, ncol=5)+
+  theme(axis.text.x = element_text(size=4, angle = 60),
+        axis.text.y = element_text(size=4))
+
+# add 
+mapview(lica_ca, col.regions="forestgreen", cex=0.7, layer.name="Bullfrogs (iNat)") 
+
+#ggsave(filename = here(glue("figs/bullfrogs_facet_by_yr_inat_{date_retrieved}.png")), dpi=300, 
+#       width = 11, height = 8.5, units = "in", bg="white")
+
+```
+
+
+By county, the number of records reported is linked with higher population densities, so Los Angeles, San Diego and the Bay Area all have very high observations by county.
+
+
+::: {.column-page-inset}
+
+```{r summarizeCnty}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-align: center
+#| out-height: 140%
+
+# get table of records by County
+lica_by_cnty <- lica_ca %>% #st_drop_geometry() %>%
+  filter(!is.na(NAME)) %>%
+  group_by(NAME) %>% tally(sort = TRUE, name = "n_per_cnty") %>% 
+  slice_max(order_by = n_per_cnty, n = 20)
+
+# Plot Bullfrogs by County ------------------------------------------------
+
+ggplot() + 
+  geom_pointrange(data=lica_by_cnty,
+                           aes(y=forcats::fct_reorder(NAME, n_per_cnty),
+                               x=n_per_cnty, xmin=0, xmax=n_per_cnty),
+                  fill="green4", color="gray80", pch=21, 
+                  alpha=0.5, linewidth=0.2, size=0.7) +
+  hrbrthemes::theme_ft_rc(base_family = font2, base_size = 12, axis_text_size = 6)+
+  labs(x="County", y="",
+       subtitle = "Top 20 Counties with iNat bullfrog records",
+       caption = glue("iNaturalist {{rinat}}: pulled {date_retrieved}"))
+
+```
+
+:::
+
+
+::: {.column-page-inset}
+
+```{r cdfwCA}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| out-height: 130%
+#| layout-nrow: 1
+
+library(tmap)
+library(tmaptools)
+#map_osm <- read_osm(ca1, type = "esri-topo", raster=TRUE, zoom=7) 
+tm_shape(shp = ca1) + 
+  tm_polygons(border.col = "gray30", alpha=0, lwd=3) +
+  tm_shape(shp = ca_cntys) + 
+  tm_polygons(border.col = "gray10",border.alpha = 0.8, alpha=0, lwd=0.5) +
+  tm_layout(title="Bullfrogs \n\n in CA",title.size = 1.2, title.position = c(0.5,0.9),
+            frame=FALSE, attr.outside = FALSE) +
+  tm_shape(shp=lica_ca) + 
+  tm_dots(col="green4", border.col=alpha("gray", 0.5), shape=21, legend.show=TRUE, title="Bullfrogs",size=0.1)+
+  tm_legend(frame=FALSE, fontfamily=font2,legend.title.size=0.7,
+            legend.text.size=0.3, legend.position=c(0.01,0.05),
+            legend.show=TRUE, legend.outside=FALSE)+
+  tm_compass(position = c(.95, 0.05), type = "arrow") +
+  #tm_logo(file = here(logo), position = c("left","bottom"))+
+  tm_scale_bar(text.size=0.6, position = c("left", "bottom"))
+
+```
+
+:::
+
+# Watersheds
+
+Let's look by a given watershed or region and do a hotspot analysis through time. Here we can pull the river data and then look at occurrence in the Watershed. First we download the data, then we'll crop to observations in this watershed.
+
+```{r getWatershed}
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| column: page
+
+library(nhdplusTools)
+h8 <- read_geoparquet_sf(here("data_raw/nhd_huc08.parquet"))
+
+# pull out a single watershed
+watershed <- params$watershed # "Trinity"
+h8_sel <- h8 %>% filter(grepl(watershed, name))
+h8_sel_mrg <- rmapshaper::ms_dissolve(h8_sel)
+
+# pull mainstem rivers and lakes for watershed
+shed_wb <- nhdplusTools::get_waterbodies(h8_sel_mrg) # water bodies
+
+# get flowlines
+shed_rivs <- get_nhdplus(h8_sel_mrg)
+
+# quick map
+# plot(h8_sel$geometry, border = "gray50", lty=2)
+# plot(shed_rivs$geometry, col="steelblue4", lwd=shed_rivs$streamorde/4, add=TRUE)
+# plot(shed_wb$geometry, border="steelblue2", col="steelblue2", add=TRUE)
+# plot(h8_sel_mrg$geometry, border="gray40", lwd=3, add=TRUE)
+# title(main = glue("{watershed} Watershed"), family=font1)
+
+# quick map
+ggplot() + 
+  geom_sf(data=h8_sel, fill=NA, color="gray50", linewidth=0.3, lty=2) +
+  geom_sf(data=shed_rivs, color="steelblue4", linewidth=shed_rivs$streamorde/6, show.legend = FALSE)+
+  geom_sf(data=shed_wb, fill=alpha("steelblue2", 0.9), color="steelblue2")+
+  geom_sf(data=h8_sel_mrg, fill=NA, color="gray40", linewidth=1.2)+
+  theme_void(base_family = font1) +
+  labs(title = glue("{watershed} Watershed")) +
+  theme(plot.title = element_text(face="bold",vjust=2.5, hjust=0.6, size=14))
+  
+```
+
+## Occurrence by Year
+
+Now let's look at observations in the watershed through time.
+
+```{r BullfrogObsYr}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| out-width: 120%
+#| column: page-right
+
+lica_sel <- lica_ca[st_transform(h8_sel_mrg, st_crs(lica_ca)),] %>% 
+  mutate(year = as.factor(year))
+
+ggplot() + 
+  geom_sf(data=h8_sel, fill=NA, color="gray50", linewidth=0.3, lty=2) +
+  geom_sf(data=shed_rivs, color="steelblue4", linewidth=shed_rivs$streamorde/6, show.legend = FALSE)+
+  geom_sf(data=shed_wb, fill=alpha("steelblue2", 0.9), color="steelblue2")+
+  geom_sf(data=h8_sel_mrg, fill=NA, color="gray40", linewidth=1.1) +
+  geom_sf(data=lica_sel, pch=21, aes(fill=year),color="black", size=2.5, alpha=0.7)+
+  scale_fill_viridis_d("Year obs", option="C")+
+  theme_void(base_family = font1) +
+  labs(title = glue("{watershed} Watershed"),
+       caption = "Bullfrogs obs. via iNaturalist") +
+  theme(plot.title = element_text(face="bold", size=12, hjust=0.6, vjust=2.5),
+        legend.title = element_text(family=font2, vjust=0.3, face="bold", size=10),
+        legend.text = element_text(family=font2, face="plain", size=7),
+        plot.caption = element_text(family=font2, size = 8,face = "plain"))
+
+#mapview(lica_sel, zcol="year")
+
+
+```
+
+## Occurrence by Lifestage
+
+Now we parse the years by lifestage and see if we can actually identify breeding areas. Here we specifically query for Larvae (tadpoles) or Eggs.
+
+```{r BullfrogLifestage}
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: true
+#| out-width: 120%
+#| column: page-right
+
+library(rinat)
+
+# use annotation for specific lifestage (6=L, 7=E, 8=J, 2=A)
+lica_breed <- get_inat_obs(query="Bullfrog", bounds = ca1, 
+                          annotation = c(1,6),
+                          geo = TRUE, maxresults = 9999) %>% 
+  filter(!is.na(latitude)) %>% 
+  st_as_sf(coords=c("longitude", "latitude"), remove=FALSE, crs=4326) 
+
+lica_breed <- st_join(st_transform(lica_breed, 4269), ca_cntys[,c(1:6)]) %>% 
+    mutate(observed_on = ymd(observed_on),
+           year = as.factor(year(observed_on)))
+
+# trim to watershed
+lica_breed_sel <- lica_breed[st_transform(h8_sel_mrg, st_crs(lica_breed)),]
+
+# or grep lifestage info
+lica_sel_ls <- lica_sel %>% filter(grepl("bullfrog", common_name, ignore.case=TRUE)) %>% 
+  select(1:longitude, common_name:id, starts_with("num"), observed_on, coordinates_obscured, user_id:user_name, quality_grade:license, GEOID, NAME, year, geometry) %>% 
+  # look for egg or tadpole in description?
+  filter(grepl("tadpole|larv", description, ignore.case=TRUE))
+
+# merge
+lica_breed_all <- bind_rows(lica_sel_ls, select(lica_breed_sel, names(lica_sel_ls))) 
+rm(lica_breed, lica_sel_ls)
+
+# plot
+ggplot() + 
+  geom_sf(data=h8_sel, fill=NA, color="gray50", linewidth=0.3, lty=2) +
+  geom_sf(data=shed_rivs, color="steelblue4", linewidth=shed_rivs$streamorde/6, show.legend = FALSE)+
+  geom_sf(data=shed_wb, fill=alpha("steelblue2", 0.9), color="steelblue2")+
+  geom_sf(data=h8_sel_mrg, fill=NA, color="gray40", linewidth=1.1) +
+  geom_sf(data=lica_breed_all, pch=21, aes(fill=year),color="black", size=4, alpha=0.9)+
+  scale_fill_viridis_d("Breed obs", option="D")+
+  theme_void(base_family = font1) +
+  labs(title = glue("{watershed} Watershed"),
+       caption = "Bullfrogs obs. via iNaturalist") +
+  theme(plot.title = element_text(face="bold", size=12, hjust=0.6, vjust=2.5),
+        legend.title = element_text(family=font2, vjust=0.3, face="bold", size=8),
+        legend.text = element_text(family=font2, face="plain", size=8),
+        plot.caption = element_text(family=font2, size = 8,face = "plain"))
+
+#mapview(lica_sel, zcol="year")
+
+
+```
+
+
+
+# Hotpot Analysis Through Time
+
+One approach we can use is to look at what patterns may exist across different time periods, or before or after events. In this case, let's compare between before 2020, and after 2020 to get a sense of how recent drought years may have influenced observations and patterns of invasive spread of bullfrogs.
+
+## CA Wide
+
+```{r hotspot1}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+
+library(sfhotspot)
+library(MetBrewer)
+library(ggtext)
+
+
+lica_ca_hist <- lica_ca %>%
+  filter(year(ymd(observed_on)) < 2020) %>% 
+   group_by(NAME) %>% add_tally(name="n_per_cnty")
+
+lica_ca_rcnt <- lica_ca %>% 
+  filter(year(ymd(observed_on)) >= 2020) %>% 
+  group_by(NAME) %>% add_tally(name="n_per_cnty")
+
+hotspots_hist <- sfhotspot::hotspot_gistar(lica_ca_hist, cell_size = 0.2, grid_type = "hex", kde = FALSE)
+hotspots_hist_w <- sfhotspot::hotspot_gistar(lica_ca_hist, cell_size = 0.2, grid_type = "hex", weights = n_per_cnty, kde = FALSE)
+hotspots_rcnt <- sfhotspot::hotspot_gistar(lica_ca_rcnt, cell_size = 0.2, grid_type = "hex", kde = FALSE)
+hotspots_rcnt_w <- sfhotspot::hotspot_gistar(lica_ca_rcnt, cell_size = 0.2, grid_type = "hex", weights = n_per_cnty, kde = FALSE)
+
+
+# plot
+gg_hotspot_hist <- ggplot(hotspots_hist %>% filter(gistar > 0))+ # pvalue < 0.05)) +
+  geom_sf(data = ca1, fill = "#E5E6E8", color = "#868D94") +
+  geom_sf(data=ca_cntys, col="gray", fill=alpha("gray10", 0))+
+  geom_sf(data=lica_ca, col="forestgreen", alpha=0.1, size=0.7, pch=1)+
+  geom_sf(data=hotspots_hist %>% filter(gistar > 0,  pvalue < 0.05), aes(colour = gistar, fill = gistar), alpha=0.9) +
+  geom_sf(data=hotspots_hist %>% filter(gistar > 0,  pvalue > 0.05),
+          aes( fill = gistar), alpha=0.2, color=alpha("gray40", 0.5)) +
+  scale_fill_stepsn("Bullfrogs", colors = MetBrewer::met.brewer("Tam"), limits = c(0, 30), breaks = seq(0, 30, 5)) +
+  scale_color_stepsn("Bullfrogs", colors = MetBrewer::met.brewer("Tam"), limits = c(0, 30), breaks = seq(0, 30, 5)) +
+  coord_sf(crs = "+proj=aea +lat_1=25 +lat_2=50 +lon_0=-100") +
+  labs(subtitle = "2019 or earlier",
+       caption = glue("Data: iNaturalist {{rinat}}, updated {date_retrieved}")) +
+  theme_void(base_family = font1) +
+  theme(
+    #plot.background = element_rect(fill = "#868D94", color = NA),
+    plot.caption.position = "plot",
+    plot.caption = element_markdown(size=6, hjust = 1),
+    #axis.text = element_text(size = 2),
+    legend.key.height = unit(2, "lines"),
+    legend.key.width = unit(0.8, "lines"),
+    legend.title = element_text(size=10, color="gray40", family=font2),
+    legend.text = element_text(size = 8, color = "gray40", family = font2)
+  )
+
+#gg_hotspot_hist
+#ggsave(filename = "figs/bullfrog_hotspots_via_iNat.png",
+#       width = 8.5, dpi = 300, bg = "white", type="cairo")
+
+# plot
+gg_hotspot_rcnt <- ggplot(hotspots_rcnt_w %>% filter(gistar > 0))+ # pvalue < 0.05)) +
+  geom_sf(data = ca1, fill = "#E5E6E8", color = "#868D94") +
+  geom_sf(data=ca_cntys, col="gray", fill=alpha("gray10", 0))+
+  geom_sf(data=lica_ca, col="forestgreen", alpha=0.1, size=0.7, pch=16)+
+  geom_sf(data=hotspots_rcnt_w %>% filter(gistar > 0,  pvalue < 0.05), aes(colour = gistar, fill = gistar), alpha=0.9) +
+  geom_sf(data=hotspots_rcnt_w %>% filter(gistar > 0,  pvalue > 0.05),
+          aes( fill = gistar), alpha=0.2, color=alpha("gray40", 0.5)) +
+  scale_fill_stepsn("Bullfrogs", colors = MetBrewer::met.brewer("Tam"), limits = c(0, 30), breaks = seq(0, 30, 5)) +
+  scale_color_stepsn("Bullfrogs", colors = MetBrewer::met.brewer("Tam"), limits = c(0, 30), breaks = seq(0, 30, 5)) +
+  coord_sf(crs = "+proj=aea +lat_1=25 +lat_2=50 +lon_0=-100") +
+  labs(subtitle = "2020 or later",
+       caption = glue("Data: iNaturalist {{rinat}}, updated {date_retrieved}")) +
+  theme_void(base_family = font1) +
+  theme(
+    #plot.background = element_rect(fill = "#868D94", color = NA),
+    plot.caption.position = "plot",
+    plot.caption = element_markdown(size=6, hjust = 1),
+    #axis.text = element_text(size = 2),
+    legend.key.height = unit(2, "lines"),
+    legend.key.width = unit(0.8, "lines"),
+    legend.title = element_text(size=10, color="gray40", family=font2),
+    legend.text = element_text(size = 8, color = "gray40", family = font2)
+  )
+
+#gg_hotspot_rcnt
+
+
+```
+
+
+```{r hotspotplot}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| column: page
+#| out-width: 120%
+#| fig-align: center
+#| fig-dpi: 300
+
+library(patchwork)
+
+gg_hotspot_hist + gg_hotspot_rcnt + plot_layout(guides='collect')
+
+```
+
+
+## Watershed Analysis
+
+Here we can map the spread of bullfrogs (or at least the documentation of more records) further up the watershed over time. This increase may just be a correlation with the number of records and/or people using iNaturalist, but provides an interesting way to view the data.
+
+
+```{r hotspotWatershed}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| column: page
+#| fig-align: center
+
+
+# apply hotspot by year
+library(purrr)
+library(sfhotspot)
+
+# looped version
+lica_sel_yr <- lica_sel %>%
+  st_transform(3310) %>% 
+  split(.$year)
+# apply function
+hotspots_sel <- map(lica_sel_yr,~sfhotspot::hotspot_gistar(.x, cell_size=4000, grid_type = "hex", kde = FALSE))
+hotspots_sel_all <- bind_rows(hotspots_sel, .id = "obs_year") # combine
+
+# make a grid
+# hexgrid <- st_make_grid(h8_sel_mrg, cellsize = 4000, square = FALSE) %>% st_as_sf(crs=3310) %>% rowid_to_column()
+# hexgrid <- hexgrid[h8_sel_mrg,] # trim
+# lica_sel <- st_transform(lica_sel, st_crs(hexgrid))
+# mapview(hexgrid, alpha.regions=0, color="gray", legend=FALSE) + mapview(lica_sel, col.regions="orange")
+
+# single
+# hotspots_sel <- sfhotspot::hotspot_gistar(lica_sel, cell_size = 4000, weights = year, grid_type = "hex", kde=FALSE)
+# mapview(lica_sel, col.regions="orange") + mapview(hotspots_sel, zcol="gistar")
+
+# plot
+shed_rivs <- shed_rivs %>% 
+  mutate(linewidths=streamorde/6) 
+
+gg_watershed <- ggplot() +   
+  geom_sf(data=h8_sel, fill=NA, color=alpha("gray80", 0.7), linewidth=0.2) +
+    geom_sf(data=shed_rivs %>% filter(streamorde==4), 
+          inherit.aes = FALSE, linewidth=0.2, color="steelblue", show.legend = FALSE) +
+    geom_sf(data=shed_rivs %>% filter(streamorde==5), 
+          inherit.aes = FALSE, linewidth=0.4, color="steelblue", show.legend = FALSE) +
+  geom_sf(data=shed_rivs %>% filter(streamorde==6), 
+          inherit.aes = FALSE, linewidth=0.7, color="steelblue", show.legend = FALSE) +
+  geom_sf(data=shed_wb, fill=alpha("steelblue4", 0.8), color="steelblue4")+
+  geom_sf(data=h8_sel_mrg, fill=NA, color=alpha("gray30", 0.5), linewidth=0.8) +
+  
+  # here we plot all data > 0
+  geom_sf(data=hotspots_sel_all %>% filter(gistar > 0), aes(colour = gistar, fill = gistar), alpha=0.8, size=10) +
+  
+  # here we plot nonsig data
+  #geom_sf(data=hotspots_sel_all %>% filter(gistar > 0,  pvalue > 0.05),
+  #        alpha=0.2, fill="gray20", color=alpha("gray40", 0.5)) +
+  
+  # here we plot only significant data
+  #geom_sf(data=hotspots_sel_all %>% filter(gistar > 0,  pvalue < 0.05), aes(colour = gistar, fill = gistar), alpha=0.9, size=10) +
+  
+  # color schemes
+  scale_fill_stepsn("iNaturalist\nRecords", colors = MetBrewer::met.brewer("Tam"), 
+                    limits = c(0, 5), breaks = seq(0, 5, 1)) +
+  scale_color_stepsn("iNaturalist\nRecords", colors = MetBrewer::met.brewer("Tam"), 
+                     limits = c(0, 5), breaks = seq(0, 5, 1)) +
+  coord_sf(crs = "+proj=aea +lat_1=25 +lat_2=50 +lon_0=-100") +
+  labs(title = glue("Bullfrog Hotspots {watershed} Watershed"),
+       caption = glue("Data: iNaturalist {{rinat}}, updated {date_retrieved} | graphic by R. Peek")) +
+  theme_void(base_family = font1) +
+  theme(
+    plot.caption.position = "plot",
+    plot.caption = element_markdown(hjust=1, face="plain", family = font2),
+    legend.key.height = unit(2, "lines"),
+    legend.key.width = unit(0.8, "lines"),
+    strip.text = element_text(face="bold", family=font2, size=12),
+    plot.title = element_text(face="bold", size=14, vjust=2),
+    legend.title = element_text(size=12, face = "bold", color="gray40", family=font2),
+    legend.text = element_text(size = 10, color = "gray40", family = font2)
+  ) + facet_wrap(~obs_year)
+
+#gg_hotspot_hist
+ggsave(gg_watershed, filename = here(glue("figs/bullfrog_hotspots_via_iNat_{watershed}.png")),
+       width = 11, height = 8, dpi = 300, bg = "white")
+
+```
+
+
+```{r figCurrent}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| column: page
+#| fig-align: center
+#| out-width: 100%
+
+
+knitr::include_graphics(here(glue("figs/bullfrog_hotspots_via_iNat_{watershed}.png")))
+
+```
+
+### Additional Watersheds
+
+Here's the American Watershed.
+
+```{r figAmerican}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| column: page
+#| fig-align: center
+#| out-width: 100%
+
+knitr::include_graphics(here(glue("figs/bullfrog_hotspots_via_iNat_American.png")))
+
+```
+
+Here's the Trinity Watershed.
+
+```{r figTrinity}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| column: page
+#| fig-align: center
+#| out-width: 100%
+
+knitr::include_graphics(here(glue("figs/bullfrog_hotspots_via_iNat_Trinity.png")))
+
+```
