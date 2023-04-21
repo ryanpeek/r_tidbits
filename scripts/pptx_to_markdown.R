@@ -20,12 +20,13 @@ library(fs)
 ppt_dir <- "/Users/rapeek/Library/CloudStorage/Dropbox/DOCS/Archive/2023/presentations/elkhorn_rabo_workshop"
 
 pptx <- fs::dir_ls(ppt_dir, recurse = TRUE, glob = "*.pptx")
-pptx[13]
+
+pptx[16]
 
 ## Make dir for slides
 fs::dir_create("slides")
 
-convert_pptx(path = pptx[13], author = "R. Peek", out_dir = "slides")
+convert_pptx(path = pptx[16], author = "R. Peek", out_dir = "slides")
 
 # works!
 
