@@ -16,14 +16,17 @@ library(janitor)
 ospath <- if (.Platform$OS.type == "windows") {
     "D://Garmin//"
   } else if (.Platform$OS.type == "unix") {
-    "unix"
+    "/Volumes/GARMIN/Garmin/"
   } else {
     stop("Unknown OS")
   }
 
-activity_path <- glue("{ospath}Activity")
 
-fit_ls <- fs::dir_ls(activity_path)
+# Get Activities ----------------------------------------------------------
+
+(activity_path <- glue("{ospath}Activity"))
+
+(fit_ls <- fs::dir_ls(activity_path))
 
 fit_dat <- readFitFile(fit_ls[1])
 
@@ -50,3 +53,4 @@ record <- getMessagesByType(fit_dat, message_type = "record") %>%
   st_as_sf(coords=c("position_long","position_lat"), remove=FALSE, crs=4326)
 
 mapview(record, zcol="heart_rate", color=NULL)
+

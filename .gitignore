@@ -17,3 +17,5 @@ data_raw/Amtrak_*
 data_raw/*parquet
 data_raw/*tif
 data_raw/*rds
+slides/*
+/slides/
