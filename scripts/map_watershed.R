@@ -18,7 +18,7 @@ source("scripts/f_get_fonts.R")
 # Get State/Counties ------------------------------------------------------
 
 ca <- tigris::states(progress_bar=FALSE) %>% filter(NAME=="California")
-ca_cnty <- ca_cntys <- tigris::counties("CA", progress_bar=FALSE)
+ca_cnty <- read_geoparquet_sf("data_raw/ca_cntys.parquet")
 
 # Get HUC Watersheds ------------------------------------------------------
 
@@ -35,14 +35,18 @@ h8 <- read_geoparquet_sf(here("data_raw/nhd_huc08.parquet"))
 
 # pull out a single watershed
 # mapview::mapview(h8) # can view with mapview
-watershed <- "San Francisco Bay"
+watershed <- "Feather"
 h8_sel <- h8 %>% filter(grepl(watershed, name))
 plot(h8_sel$geometry)
 h8_sel_mrg <- rmapshaper::ms_dissolve(h8_sel)
 plot(h8_sel_mrg$geometry)
 
 # get water data
-ca_water <- tigris::area_water("CA", tigris::list_counties("CA")$county)
+# ca_water <- tigris::area_water("CA", tigris::list_counties("CA")$county)
+# # save out water data
+# write_geoparquet(ca_water, here::here("data_raw/tigris_ca_cnty_water_data.parquet"))
+ca_water <- read_geoparquet_sf(here("data_raw/tigris_ca_cnty_water_data.parquet"))
+ca_water <- st_transform(ca_water, 3310)
 
 # now crop by watershed
 st_crs(ca_water) ==st_crs(h8_sel_mrg)
@@ -60,7 +64,7 @@ shed_rivs <- get_nhdplus(h8_sel_mrg)
 # Base Map ----------------------------------------------------------------
 
 # set fonts depending on system:
-f_get_fonts(fnt_pr = 1)
+f_get_fonts()
 
 # quick map
 plot(h8_sel$geometry, border = "gray50", lty=2)
@@ -82,6 +86,6 @@ ggplot() +
   geom_sf(data=ca_water_sel2, fill="cyan4", color="cyan4")+
   geom_sf(data=shed_wb, fill=alpha("steelblue2", 0.9), color="steelblue2")+
   geom_sf(data=h8_sel_mrg, fill=NA, color="gray40", linewidth=1.2)+
-  theme_void(base_family = fnt_header) +
+  theme_void(base_family = fnt_text) +
   labs(title = glue("{watershed} Watershed")) +
   theme(plot.title = element_text(face="bold", vjust=-0.5, hjust=0.3, size=14))
