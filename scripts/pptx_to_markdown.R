@@ -21,12 +21,13 @@ ppt_dir <- "/Users/rapeek/Library/CloudStorage/Dropbox/DOCS/Archive/2023/present
 
 pptx <- fs::dir_ls(ppt_dir, recurse = TRUE, glob = "*.pptx")
 
-pptx[16]
+# grep for a slide
+(sel_pptx <- pptx[grepl("TuolumneHabitats", pptx)])
 
 ## Make dir for slides
 fs::dir_create("slides")
 
-convert_pptx(path = pptx[16], author = "R. Peek", out_dir = "slides")
+convert_pptx(path = sel_pptx, author = "R. Peek", out_dir = "slides")
 
 # works!
 
