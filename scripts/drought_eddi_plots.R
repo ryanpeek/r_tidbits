@@ -29,8 +29,8 @@ bb <- st_bbox(border)
 # Get Data 1: ------------------------------------------------------------
 
 # Comparison dates
-stdate1 <- "2011-06-01"
-stdate2 <- "2015-06-01"
+stdate1 <- "2022-06-01"
+stdate2 <- "2023-06-01"
 time_int <- "1 month"
 mon <- month.name[month(ymd(stdate1))]
 
@@ -94,7 +94,7 @@ colnames(eddi_df2) <- c("x", "y", "value")
       x = NULL, y = NULL,
       title = glue("{stdate2}: EDDI (monthly)"),
       #subtitle = "EDDI: Evaporative Demand Drought Index of\nhow anomalous the atmospheric evaporative\ndemand is (the thirst of the atmosphere)",
-      caption = "EDDI: Evaporative Demand Drought Index of\nhow anomalous the atmospheric evaporative\ndemand is (the thirst of the atmosphere)\nData: <https://www.earthdatascience.org/eddi>\nCreated by R. Peek using #rstats") +
+      caption = "A measure of the atmospheric evaporative demand or 'the thirst of the atmosphere'. \nData: <https://www.earthdatascience.org/eddi>  |  By: @riverpeek@vis.social") +
     # if you run into a font issue, change this to Arial or Times New Roman
     theme_ft_rc(base_family = "Roboto Slab", plot_title_size = 10, subtitle_size = 7, grid="") +
     #theme(legend.position = c(0.75, 0.7)) +
@@ -117,7 +117,7 @@ patch1
 
 (patchplot <- patch1 +
   plot_annotation(title = "EDDI: Evaporative Demand Drought Index",
-                  caption =  "A measure of the atmospheric evaporative demand or 'the thirst of the atmosphere'. \nData: <https://www.earthdatascience.org/eddi>  |  By: @riverpeek@vis.social",
+                  caption =  "A measure of the atmospheric evaporative demand or 'the thirst of the atmosphere'. \nData: <https://www.earthdatascience.org/eddi>  |  R. Peek, 2023",
                   theme = theme(plot.title = element_text(family = 'Roboto Slab', size = 18, color = "white"),
                                 plot.caption = element_text('Roboto Slab', size=12, color="white"),
                                 plot.background = element_rect(color = "#252a32", fill = "#252a32"),
