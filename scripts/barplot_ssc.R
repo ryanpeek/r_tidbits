@@ -3,6 +3,7 @@
 # libraries --------
 library(readr) # for importing data
 library(dplyr) # for wrangling data
+library(tidyverse) # all the things
 library(forcats) # for dealing with categorical data/factors
 library(ggplot2) # for plotting
 library(cowplot) # great themes for plotting and saving plots
@@ -47,6 +48,19 @@ ggplot() + geom_col(data=spp_filt, aes(x=Score, y=forcats::fct_reorder(Taxon, Sc
   labs(x="SSC Score", y="") + # fix x and y
   theme_half_open(font_size = 6) +
   cowplot::background_grid(major="x", )
+
+# Get Quantiles of Scores
+quantile(spp$Score) # can add whatever values you choose
+#0%  25%  50%  75% 100%
+#5.5 14.3 21.0 31.0 85.0
+
+# use if else statements
+spp_filt2 <- spp %>%
+  mutate(quant25 = ifelse(Score <= quantile(Score, prob= c(.25)), TRUE, FALSE),
+         quant50 = ifelse(Score > quantile(Score, prob= c(.25)) & Score <= quantile(Score, prob= c(.5)), TRUE, FALSE),
+         quant75 = ifelse(Score > quantile(Score, prob= c(.5)) & Score <= quantile(Score, prob= c(.75)), TRUE, FALSE),
+         quant100 = ifelse(Score > quantile(Score, prob= c(0.75)) & Score <= quantile(Score, prob= c(1)), TRUE, FALSE))
+
 
 # Try Facets ----------------------
 

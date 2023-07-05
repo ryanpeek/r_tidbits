@@ -5,7 +5,7 @@
 library(eddi) # devtools::install_github("earthlab/eddi")
 library(tidyverse)
 library(hrbrthemes) # devtools::install_github("hrbrmstr/hrbrthemes")
-library(sf)
+library(sf) # works with vector data
 library(rnaturalearth) # for install: https://github.com/ropensci/rnaturalearth
 library(glue)
 library(stars)
@@ -29,8 +29,8 @@ bb <- st_bbox(border)
 # Get Data 1: ------------------------------------------------------------
 
 # Comparison dates
-stdate1 <- "2020-06-01"
-stdate2 <- "2021-06-01"
+stdate1 <- "2011-06-01"
+stdate2 <- "2015-06-01"
 time_int <- "1 month"
 mon <- month.name[month(ymd(stdate1))]
 
@@ -41,7 +41,7 @@ drdat2 <- get_eddi(date = stdate2, timescale = time_int)
 # convert to stars and trim
 drtrim1 <- st_as_stars(drdat1)
 drtrim1 <- drtrim1[border] # mask by border
-plot(drtrim1, col=viridis::viridis(n = 17, option = "A"))
+plot(drtrim1, col=viridis::viridis(n = 5, option = "A"))
 
 # convert
 drtrim2 <- st_as_stars(drdat2)
@@ -73,8 +73,8 @@ colnames(eddi_df2) <- c("x", "y", "value")
     x = NULL, y = NULL,
     title = glue("{stdate1}: EDDI (monthly)"),
     caption = "EDDI: Evaporative Demand Drought Index of\nhow anomalous the atmospheric evaporative\ndemand is (the thirst of the atmosphere)\nData: <https://www.earthdatascience.org/eddi>\nCreated by R. Peek using #rstats") +
-  #expand_limits(x = 0, y=0)+
-  theme_ft_rc(base_family = "Roboto Slab", plot_title_size = 10, subtitle_size = 7, grid="") +
+   # if you run into a font issue, change this to Arial or Times New Rom
+   theme_ft_rc(base_family = "Roboto Slab", plot_title_size = 10, subtitle_size = 7, grid="") +
   #theme(legend.position = c(0.75, 0.7)) +
   theme(legend.direction = "vertical") +
   theme(legend.key.width = unit(1.2, "lines"),
@@ -95,7 +95,7 @@ colnames(eddi_df2) <- c("x", "y", "value")
       title = glue("{stdate2}: EDDI (monthly)"),
       #subtitle = "EDDI: Evaporative Demand Drought Index of\nhow anomalous the atmospheric evaporative\ndemand is (the thirst of the atmosphere)",
       caption = "EDDI: Evaporative Demand Drought Index of\nhow anomalous the atmospheric evaporative\ndemand is (the thirst of the atmosphere)\nData: <https://www.earthdatascience.org/eddi>\nCreated by R. Peek using #rstats") +
-    #expand_limits(x = 0, y=0)+
+    # if you run into a font issue, change this to Arial or Times New Roman
     theme_ft_rc(base_family = "Roboto Slab", plot_title_size = 10, subtitle_size = 7, grid="") +
     #theme(legend.position = c(0.75, 0.7)) +
     theme(legend.direction = "vertical") +
