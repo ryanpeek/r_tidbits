@@ -34,9 +34,9 @@ ca_cnty <- read_geoparquet_sf("data_raw/ca_cntys.parquet")
 h8 <- read_geoparquet_sf(here("data_raw/nhd_huc08.parquet"))
 
 # pull out a single watershed
-# mapview::mapview(h8) # can view with mapview
-watershed <- "Feather"
-h8_sel <- h8 %>% filter(grepl(watershed, name))
+# mapview::mapview(h8) # can view with mapview 18060006: Central Coastal 18060005: Salinas
+watershed <- c("Salinas", "Central Coastal")
+h8_sel <- h8 %>% filter(name %in% watershed)
 plot(h8_sel$geometry)
 h8_sel_mrg <- rmapshaper::ms_dissolve(h8_sel)
 plot(h8_sel_mrg$geometry)
@@ -89,3 +89,87 @@ ggplot() +
   theme_void(base_family = fnt_text) +
   labs(title = glue("{watershed} Watershed")) +
   theme(plot.title = element_text(face="bold", vjust=-0.5, hjust=0.3, size=14))
+
+
+
+# Add Circular Inset ------------------------------------------------------
+
+# use a lat lon
+pt <- sf::st_as_sf(data.frame(x = -121.27190, y = 35.85476),
+             coords = c("x", "y"), crs = 4326)
+
+# make a circle buffer
+center_proj <- pt
+dist <-  10000 # the buffer
+circle_buff <- center_proj %>%
+  st_buffer(dist = dist) %>%
+  st_transform(crs = 3310)
+plot(circle_buff$geometry)
+
+# crop the data
+shed_rivs_crop <- shed_rivs2 %>%
+  st_intersection(circle_buff)
+ca_water_crop <- ca_water_sel2 %>%
+  st_intersection(circle_buff)
+
+
+# Main Map before Circle ------------------------
+(main_map <-
+   ggplot() +
+   geom_sf(data=h8_sel, lwd = 0, color = alpha("white",0.1)) +
+   labs(
+     title = glue("{watershed} Watershed"),
+     caption = "NHD Zoom | Graphic by R. Peek") +
+   geom_sf(data=h8_sel, fill=NA, color="brown4", linewidth=0.2, lty=1) +
+   geom_sf(data=shed_rivs2, color="steelblue4", linewidth=shed_rivs2$streamorde/6, show.legend = FALSE, alpha=0.6) +
+   #geom_sf(data=ca_water_sel2, fill="cyan4", color="cyan4")+
+   geom_sf(data=shed_wb, fill=alpha("steelblue2", 0.9), color="steelblue2")+
+   # add the outline
+   geom_sf(data=circle_buff, fill=NA, col="black", linewidth=.5)+
+   coord_sf(expand = FALSE) +
+   theme_void() +
+   theme(
+     # defines the edge of the legend.position coordinates
+     #legend.justification = c(0.2, 1),
+     legend.position = c(0.2, .25),
+     title = element_text(family = "Roboto"),
+     legend.title = element_text(family = "Roboto", size = 10, face = "bold"),
+     legend.text = element_text(family = "Roboto Condensed", size = 10)
+   ))
+
+
+# Make Circular Plot ------------------------------------------------------
+
+(circ_plot <-
+   ggplot() +
+   geom_sf(data=circle_buff, fill="white", col="black", linewidth=1)+
+   geom_sf(data=shed_rivs_crop, color="steelblue4", linewidth=shed_rivs_crop$streamorde/6, show.legend = FALSE) +
+   geom_sf(data=ca_water_crop, fill="cyan4", color="cyan4")+
+   geom_sf(data=circle_buff, fill=NA, col="black", linewidth=1.5)+
+   coord_sf(expand = 0.01) +
+   theme_void()
+)
+
+
+# Combine w patchwork -----------------------------------------------------------------
+
+library(patchwork)
+
+# draw
+
+(p1 <- main_map + inset_element(circ_plot,
+                                left =  0.55, bottom = 0.6, 1.2, 1,
+                                align_to = 'plot',
+                                on_top = TRUE))
+
+# save pdf
+ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra_w.pdf",
+       device = cairo_pdf, bg="white",
+       width = 8.5, height = 10)
+
+# png
+ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra.png",
+       bg="white", dpi=300, device = "png",
+       width = 8.5, height = 10, units = "in")
+
+
