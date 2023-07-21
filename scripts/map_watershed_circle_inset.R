@@ -9,7 +9,8 @@ library(sf)
 library(glue)
 library(tigris)
 library(nhdplusTools)
-library(geoarrow)
+library(arrow)
+library(geoarrow) # remotes::install_github("paleolimbot/geoarrow")
 library(rmapshaper)
 library(mapview)
 mapviewOptions(fgb=FALSE)
@@ -18,6 +19,9 @@ source("scripts/f_get_fonts.R")
 # Get State/Counties ------------------------------------------------------
 
 ca <- tigris::states(progress_bar=FALSE) %>% filter(NAME=="California")
+#ca_cnty <- counties("CA", cb = TRUE, progress_bar = FALSE)
+#ca_cnty <- st_cast(ca_cnty, "MULTIPOLYGON")
+#write_geoparquet(ca_cnty, "data_raw/ca_cntys.parquet")
 ca_cnty <- read_geoparquet_sf("data_raw/ca_cntys.parquet")
 
 # Get HUC Watersheds ------------------------------------------------------
@@ -31,7 +35,8 @@ ca_cnty <- read_geoparquet_sf("data_raw/ca_cntys.parquet")
 
 # Watershed ---------------------------------------------------------------
 # load
-h8 <- read_geoparquet_sf(here("data_raw/nhd_huc08.parquet"))
+h8 <- read_geoparquet_sf(here("data_raw/nhd_huc08.parquet")) %>%
+   st_transform(3310)
 
 # pull out a single watershed
 # mapview::mapview(h8) # can view with mapview 18060006: Central Coastal 18060005: Salinas
@@ -43,13 +48,13 @@ plot(h8_sel_mrg$geometry)
 
 # get water data
 # ca_water <- tigris::area_water("CA", tigris::list_counties("CA")$county)
-# # save out water data
+# save out water data
 # write_geoparquet(ca_water, here::here("data_raw/tigris_ca_cnty_water_data.parquet"))
 ca_water <- read_geoparquet_sf(here("data_raw/tigris_ca_cnty_water_data.parquet"))
-ca_water <- st_transform(ca_water, 3310)
+ca_water <- st_transform(ca_water, st_crs(h8_sel_mrg))
 
 # now crop by watershed
-st_crs(ca_water) ==st_crs(h8_sel_mrg)
+st_crs(ca_water)==st_crs(h8_sel_mrg)
 ca_water_sel <- ca_water[h8_sel_mrg,] # select via spatial join
 ca_water_sel2 <- st_intersection(ca_water_sel, h8_sel_mrg)
 
@@ -158,18 +163,22 @@ library(patchwork)
 # draw
 
 (p1 <- main_map + inset_element(circ_plot,
-                                left =  0.55, bottom = 0.6, 1.2, 1,
+                                left =  0.55, bottom = 0.6, 1, 1,
                                 align_to = 'plot',
                                 on_top = TRUE))
 
+
+
 # save pdf
-ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra_w.pdf",
-       device = cairo_pdf, bg="white",
-       width = 8.5, height = 10)
+ggsave(plot = p1,
+       filename = glue("figs/map_{first(watershed)}_watershed_circle_inset.pdf"),
+       device = cairo_pdf, bg="white", scale = 1,
+       width = 8.5, height = 11)
 
 # png
-ggsave(plot = p1, filename = "figs/map_hw_health_zoom_west_sierra.png",
+ggsave(plot = p1,
+       filename = glue("figs/map_{first(watershed)}_watershed_circle_inset.png"),
        bg="white", dpi=300, device = "png",
-       width = 8.5, height = 10, units = "in")
+       width = 8.5, height = 11, units = "in")
 
 
