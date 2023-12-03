@@ -61,6 +61,7 @@ ggplot() +
 # Bulk Download Info ------------------------------------------------------
 
 # https://www.ncei.noaa.gov/pub/data/cirs/climdiv/
+# remotes::install_github("ryanpeek/wateRshedTools")
 
 shps <- wateRshedTools::get_shp_zip("https://www.ncei.noaa.gov/pub/data/cirs/climdiv/CONUS_CLIMATE_DIVISIONS.shp.zip")
 
@@ -72,7 +73,7 @@ pryr::object_size(cd_ca)
 pryr::object_size(climdiv_ca)
 
 # plot
-mapview::mapview(climdiv_ca, col.regions=NA, lwd=5, color="forestgreen") + mapview::mapview(cd_ca, color="orange", col.regions=NA, lwd=1, alpha.regions=0)
+#mapview::mapview(climdiv_ca, col.regions=NA, lwd=5, color="forestgreen") + mapview::mapview(cd_ca, color="orange", col.regions=NA, lwd=1, alpha.regions=0)
 
 plot(cd_ca$geometry, border="orange", lwd=0.5)
 
@@ -84,7 +85,7 @@ write_rds(cd_ca, "data_out/climdiv_ca.rds")
 
 # climate division data
 
-curr_pcp <- "https://www.ncei.noaa.gov/pub/data/cirs/climdiv/climdiv-pcpndv-v1.0.0-20221206"
+curr_pcp <- "https://www.ncei.noaa.gov/pub/data/cirs/climdiv/climdiv-pcpndv-v1.0.0-20231106"
 
 dat_out <- rio::import(curr_pcp, format = "tsv",
                        colClasses=c("character", rep("numeric",12)))
@@ -108,9 +109,10 @@ table(dat_ca$climdiv)
 
 # plot by climate div
 g1 <- ggplot() + geom_sf(data=cd_ca) + geom_sf_label(data=cd_ca, aes(label=CD_2DIG))
-g2 <- ggplot() + geom_line(data=dat_ca, aes(x=year, y=Jan, color=climdiv), show.legend = FALSE) +
+g2 <- ggplot() + geom_line(data=dat_ca |> filter(year>2000), aes(x=year, y=Jan, color=climdiv), show.legend = FALSE) +
   facet_wrap(~climdiv)
 
 library(patchwork)
 g2 + inset_element(g1, left = 0.6, bottom = -0.1, right = 1, top = 0.3)
+
 wrap_plots(g2, g1)
