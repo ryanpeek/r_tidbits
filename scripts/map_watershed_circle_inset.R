@@ -19,8 +19,8 @@ source("scripts/f_get_fonts.R")
 # Get State/Counties ------------------------------------------------------
 
 ca <- tigris::states(progress_bar=FALSE) %>% filter(NAME=="California")
-#ca_cnty <- counties("CA", cb = TRUE, progress_bar = FALSE)
-#ca_cnty <- st_cast(ca_cnty, "MULTIPOLYGON")
+ca_cnty <- counties("CA", cb = TRUE, progress_bar = FALSE)
+ca_cnty <- st_cast(ca_cnty, "MULTIPOLYGON")
 #write_geoparquet(ca_cnty, "data_raw/ca_cntys.parquet")
 ca_cnty <- read_geoparquet_sf("data_raw/ca_cntys.parquet")
 
