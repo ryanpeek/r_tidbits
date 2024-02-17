@@ -1,0 +1,52 @@
+---
+title: "Typst"
+format: 
+  typst:
+    mainfont: "Atkinson Hyperlegible"
+    include-before-body:
+      - text: |
+          #show heading: set text(navy)
+---
+
+# A document you've always wanted
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+Type type type stuff stuff stuff.
+
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+
+::: {#tbl-frog}
+
+![](img/rabo_frog_icon.png)
+
+An image treated like a frog
+
+:::
+
+## Lists
+
++ The climate
+  - Temperature
+  - Precipitation
++ The topography
++ The geology
