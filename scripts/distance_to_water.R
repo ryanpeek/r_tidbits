@@ -39,20 +39,66 @@ flowlines <- nhdplusTools::get_nhdplus(bbox_poly)
 #                          flowline_only = FALSE,
 #                          return_data = TRUE, overwrite = TRUE)
 
+
+flowlines_s <- flowlines |>
+  select(comid, gnis_id:streamorde, pathlength:arbolatesu, geometry)
+
+
+
 # Simplify ----------------------------------------------------------------
 
 crs <- 3310
 
-flowlines_simple <- flowlines |>
+flowlines_simple <- flowlines_s |>
   st_transform(crs) |>
-  rmapshaper::ms_simplify(keep=0.1) |>
-  st_intersection(bbox_poly)
+  rmapshaper::ms_simplify(keep=0.1)
 
-water_bodies_simple <-
-  st_transform(water_bodies, crs) |>
-  st_buffer(0) |>
-  rmapshaper::ms_simplify(keep = 0.05) |>
-  st_intersection(bbox)
+# water_bodies_simple <-
+#   st_transform(water_bodies, crs) |>
+#   st_buffer(0) |>
+#   rmapshaper::ms_simplify(keep = 0.05)
+
+# Nearest -----------------------------------------------------------------
+
+nearest_pts <- st_nearest_points(bird_pts, flowlines_simple)
+
+# get nearest feature
+nearest_pts <- st_nearest_feature(bird_pts, flowlines_simple)
+
+# Snap geometries of POIs to the network
+snapped_pts <- bird_pts  |>
+  st_set_geometry(st_geometry(flowlines_simple)[nearest_pts])
+
+# then, convert the LINESTRING to POINTs
+#    and, pull out the second point, because we want the point on the 'roads' object,
+#    which was supplied second to st_nearest_points()
+my_linestring %>%
+  st_cast('POINT') %>%
+  .[2] %>%
+  {. ->> closest_point}
+
+closest_point
+
+
+
+mapview(snapped_pts, col.regions="orange")+ mapview(bird_pts, col.regions="purple") +
+  mapview(nearest_pts, col.regions="blue", cex=4) +
+  mapview(flowlines_simple, lwd=0.4)
+
+# Networksf ---------------------------------------------------------------
+
+
+library(sfnetworks)
+
+flowlines_net <- as_sfnetwork(flowlines_s)
+
+# get nearest Nodes
+nearest_nodes <- st_nearest_feature(bird_pts, flowlines_net)
+
+# Snap geometries of POIs to the network
+snapped_pts <- bird_pts  |>
+  st_set_geometry(st_geometry(flowlines_net)[nearest_nodes])
+
 
 # Use NN Approach ---------------------------------------------------------
 
@@ -113,3 +159,27 @@ mapview(snapped) + mapview(flowlines_simple)
 dist_for_edge <- st_geometry(obj = polygons_sf) %>%
   st_cast(to = 'MULTILINESTRING') %>%
   st_distance(y=points_sf)
+
+
+
+# OPtion 900 --------------------------------------------------------------
+
+st_snap_to_network = function(x, y) {
+  # Function to find the nearest network point to a single input point.
+  f = function(z) {
+    # Convert sfg to sfc.
+    z = sf::st_sfc(z, crs = sf::st_crs(x))
+    # Run st_nearest_points.
+    # This returns for each combination (z, y) a linestring from z to the
+    # .. nearest point on y.
+    np = sf::st_nearest_points(z, y)
+    # Then, we get the np-line to the nearest feature y from z
+    np[sf::st_nearest_feature(z, y),] ### LINE CHANGED HERE!
+  }
+  # Run f for all input points.
+  geoms = do.call("c", lapply(sf::st_geometry(x), f))
+  # Replace the geometries of x with their nearest network points.
+  if (inherits(x, "sf")) sf::st_geometry(x) = geoms
+  if (inherits(x, "sfc")) x = geoms
+  x
+}git
