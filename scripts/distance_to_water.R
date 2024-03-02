@@ -59,7 +59,7 @@ flowlines_simple <- flowlines_s |>
 #   rmapshaper::ms_simplify(keep = 0.05)
 
 # Nearest -----------------------------------------------------------------
-
+# https://stackoverflow.com/questions/51292952/snap-a-point-to-the-closest-point-on-a-line-segment-using-sf/51300037#51300037
 nearest_pts <- st_nearest_points(bird_pts, flowlines_simple)
 
 # get nearest feature
