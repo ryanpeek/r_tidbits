@@ -20,3 +20,4 @@ data_raw/*rds
 data_raw/Full_Sp_Scores.csv
 slides/*
 /slides/
+data_raw/*gpkg
