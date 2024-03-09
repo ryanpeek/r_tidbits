@@ -4,6 +4,9 @@ library(duckdb)
 library(tidyverse)
 library(stringr)
 
+
+# DUCKDB: Stocks ----------------------------------------------------------
+
 # list of URLs containing our csv files
 base_url <- "https://raw.githubusercontent.com/Robot-Wealth/r-quant-recipes/master/data/"
 stocks <- c("AAPL", "BA", "CAT", "IBM", "MSFT")
@@ -36,9 +39,7 @@ tbl(con, "prices") %>%
     From = first(Date),
     To = last(Date)
   )
-result <- dbGetQuery(con, paste0("SELECT * FROM prices LIMIT 5"))
-result
-
+(result <- dbGetQuery(con, paste0("SELECT * FROM prices LIMIT 5")))
 
 tbl(con, "prices") %>%
   head(5) %>%
@@ -70,14 +71,34 @@ affected_rows
 tbl(con, "prices") %>% head()
 
 
-# duckdbfs -----------
+# DUCKDB: FLIGHTS ---------------------------------------------------------
+
+library(duckdb)
+library(dplyr)
+con <- dbConnect(duckdb())
+duckdb_register(con, "flights", nycflights13::flights)
+
+tbl(con, "flights") |>
+  group_by(dest) |>
+  summarise(delay = mean(dep_time, na.rm = TRUE)) |>
+  collect()
+
+# Establish a set of Parquet files
+dbExecute(con, "COPY flights TO 'dataset' (FORMAT PARQUET, PARTITION_BY (year, month))")
+
+# Summarize the dataset in DuckDB to avoid reading 12 Parquet files into R's memory
+tbl(con, "read_parquet('dataset/**/*.parquet', hive_partitioning = true)") |>
+  filter(month == "3") |>
+  summarise(delay = mean(dep_time, na.rm = TRUE)) |>
+  collect()
+
+
+# DUCKDBFS ------------------------------------
 
 # https://github.com/cboettig/duckdbfs
 devtools::install_github("cboettig/duckdbfs")
-
 library(duckdbfs)
 library(dplyr)
-
 
 base <- paste0("https://github.com/duckdb/duckdb/raw/main/",
                "data/parquet-testing/hive-partitioning/union_by_name/")
@@ -86,20 +107,23 @@ f2 <- paste0(base, "x=1/f2.parquet")
 f3 <- paste0(base, "x=2/f2.parquet")
 urls <- c(f1,f2,f3)
 
-
 ds <- open_dataset(urls, unify_schemas = TRUE)
 ds
 
-## S3 -----
+## DUCKDBFS: S3 ---------------------
+
 parquet <- "s3://gbif-open-data-us-east-1/occurrence/2023-06-01/occurrence.parquet"
 duckdb_s3_config()
 gbif <- open_dataset(parquet, anonymous = TRUE, s3_region="us-east-1")
 
+head(gbif)
+
+# anonymous access to a bucket with alt endpoint
 efi <- open_dataset("s3://anonymous@neon4cast-scores/parquet/aquatics?endpoint_override=data.ecoforecast.org")
 
-nrow(efi)
+head(efi)
 
-## From Spatial --------
+## DUCKDBFS: Spatial ---------------------
 
 spatial_ex <- paste0("https://raw.githubusercontent.com/cboettig/duckdbfs/",
                      "main/inst/extdata/spatial-test.csv") |>
@@ -108,18 +132,23 @@ spatial_ex <- paste0("https://raw.githubusercontent.com/cboettig/duckdbfs/",
 spatial_ex |>
   mutate(geometry = st_point(longitude, latitude)) |>
   mutate(dist = st_distance(geometry, st_point(0,0))) |>
-  to_sf()
-
+  to_sf(crs = 4326)
 
 ## vectors
-url <- "https://github.com/cboettig/duckdbfs/raw/25744032021cc2b9bbc560f95b77b3eb088c9abb/inst/extdata/world.gpkg"
-
-countries <-
-  paste0("/vsicurl/", url) |>
-  open_dataset(format="sf")
+url <- "https://github.com/cboettig/duckdbfs/raw/main/inst/extdata/world.fgb"
+countries <- open_dataset(url,
+                          format = "sf")
 
 countries |> head()
 
+# get metadata
+countries_meta <- st_read_meta(url)
+countries_meta
+
+# bring it all into R mem
+in_mem <- countries |> to_sf(crs = countries_meta$wkt)
+
+# work outside of in mem
 library(sf)
 melbourne <- st_point(c(144.9633, -37.814)) |> st_as_text()
 
@@ -130,22 +159,29 @@ sf_obj <- countries |> filter(continent == "Africa") |> to_sf()
 plot(sf_obj["name"])
 
 
-## JOINS ----------------
+## DUCKDBFS: SPATIAL JOINS ----------------
 
-cities <-
-  paste0("/vsicurl/https://github.com/cboettig/duckdbfs/raw/",
-         "spatial-read/inst/extdata/metro.fgb") |>
-  open_dataset(format = "sf")
+url_cities <- "https://github.com/cboettig/duckdbfs/raw/spatial-read/inst/extdata/metro.fgb"
+cities <- open_dataset(url_cities, format="sf")
 
+# check meta to see crs matches
+countries_meta$proj4
+st_read_meta(url_cities)$proj4
+
+# return all points within collection of polygons
 countries |>
   dplyr::filter(continent == "Oceania") |>
   spatial_join(cities, by = "st_intersects", join="inner") |>
   select(name_long, sovereignt, pop2020)
 
-# WRITE -----------
+
+## DUCKDBFS: WRITE -----------
 
 mtcars |> group_by(cyl, gear) |> write_dataset(tempfile())
 
+# READ FROM CSV:
+# write.csv(mtcars, "mtcars.csv", row.names=FALSE)
+# lazy_cars <- open_dataset("mtcars.csv", format = "csv")
 
 # duck spatial
 # https://github.com/duckdb/duckdb_spatial
