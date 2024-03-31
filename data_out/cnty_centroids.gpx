@@ -1,0 +1,1048 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="GDAL 3.5.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ogr="http://osgeo.org/gdal" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata><bounds minlat="33.028062022041127" minlon="-123.957653233789856" maxlat="41.744717238893017" maxlon="-115.365352251829194"/></metadata>              
+<wpt lat="39.580708679716473" lon="-120.516011209157611">
+  <name>Sierra</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>091</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277310</ogr:COUNTYNS>
+    <ogr:GEOID>06091</ogr:GEOID>
+    <ogr:NAMELSAD>Sierra County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2468694582.0</ogr:ALAND>
+    <ogr:AWATER>23299110.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.5769252</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.5219926</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.449052845238683" lon="-121.344519544523877">
+  <name>Sacramento</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>067</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277298</ogr:COUNTYNS>
+    <ogr:GEOID>06067</ogr:GEOID>
+    <ogr:NAMELSAD>Sacramento County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2500063008.0</ogr:ALAND>
+    <ogr:AWATER>75323438.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.4501363</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.3443291</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="34.537317343752747" lon="-120.030300277051637">
+  <name>Santa Barbara</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>083</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277306</ogr:COUNTYNS>
+    <ogr:GEOID>06083</ogr:GEOID>
+    <ogr:NAMELSAD>Santa Barbara County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>7080858282.0</ogr:ALAND>
+    <ogr:AWATER>2729215451.0</ogr:AWATER>
+    <ogr:INTPTLAT>+34.5366774</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.0383645</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.204459376300903" lon="-120.554675072042329">
+  <name>Calaveras</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>009</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675885</ogr:COUNTYNS>
+    <ogr:GEOID>06009</ogr:GEOID>
+    <ogr:NAMELSAD>Calaveras County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2641837360.0</ogr:ALAND>
+    <ogr:AWATER>43789489.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.1910682</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.5541065</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="34.355755901442578" lon="-119.126523884907527">
+  <name>Ventura</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>111</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277320</ogr:COUNTYNS>
+    <ogr:GEOID>06111</ogr:GEOID>
+    <ogr:NAMELSAD>Ventura County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>4767585001.0</ogr:ALAND>
+    <ogr:AWATER>947376202.0</ogr:AWATER>
+    <ogr:INTPTLAT>+34.3587477</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.1331453</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="34.195909624903862" lon="-118.261819239691064">
+  <name>Los Angeles</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>037</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277283</ogr:COUNTYNS>
+    <ogr:GEOID>06037</ogr:GEOID>
+    <ogr:NAMELSAD>Los Angeles County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>10515988166.0</ogr:ALAND>
+    <ogr:AWATER>1785003207.0</ogr:AWATER>
+    <ogr:INTPTLAT>+34.1963983</ogr:INTPTLAT>
+    <ogr:INTPTLON>-118.2618616</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.525256864881662" lon="-122.921866297433169">
+  <name>Sonoma</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>097</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01657246</ogr:COUNTYNS>
+    <ogr:GEOID>06097</ogr:GEOID>
+    <ogr:NAMELSAD>Sonoma County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>4080091725.0</ogr:ALAND>
+    <ogr:AWATER>497303747.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.5251824</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.9261095</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="36.074939694462103" lon="-119.81583486966565">
+  <name>Kings</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>031</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277280</ogr:COUNTYNS>
+    <ogr:GEOID>06031</ogr:GEOID>
+    <ogr:NAMELSAD>Kings County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3602601926.0</ogr:ALAND>
+    <ogr:AWATER>3164290.0</ogr:AWATER>
+    <ogr:INTPTLAT>+36.0724780</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.8155301</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="33.028062022041127" lon="-116.769920737418317">
+  <name>San Diego</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>073</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277301</ogr:COUNTYNS>
+    <ogr:GEOID>06073</ogr:GEOID>
+    <ogr:NAMELSAD>San Diego County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>10904539456.0</ogr:ALAND>
+    <ogr:AWATER>817287145.0</ogr:AWATER>
+    <ogr:INTPTLAT>+33.0236041</ogr:INTPTLAT>
+    <ogr:INTPTLON>-116.7761174</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.063846931308184" lon="-120.719034783992754">
+  <name>Placer</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>061</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277295</ogr:COUNTYNS>
+    <ogr:GEOID>06061</ogr:GEOID>
+    <ogr:NAMELSAD>Placer County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3644336873.0</ogr:ALAND>
+    <ogr:AWATER>246435971.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.0620323</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.7227181</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.760082440653278" lon="-122.694123280604757">
+  <name>San Francisco</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>075</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277302</ogr:COUNTYNS>
+    <ogr:GEOID>06075</ogr:GEOID>
+    <ogr:NAMELSAD>San Francisco County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H6</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>C</ogr:FUNCSTAT>
+    <ogr:ALAND>121045788.0</ogr:ALAND>
+    <ogr:AWATER>479608103.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.7272391</ogr:INTPTLAT>
+    <ogr:INTPTLON>-123.0322294</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.055140344209107" lon="-122.748575998124124">
+  <name>Marin</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>041</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277285</ogr:COUNTYNS>
+    <ogr:GEOID>06041</ogr:GEOID>
+    <ogr:NAMELSAD>Marin County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1347890152.0</ogr:ALAND>
+    <ogr:AWATER>797077336.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.0513667</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.7463958</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.58147016649076" lon="-119.905945409832398">
+  <name>Mariposa</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>043</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277286</ogr:COUNTYNS>
+    <ogr:GEOID>06043</ogr:GEOID>
+    <ogr:NAMELSAD>Mariposa County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3752476985.0</ogr:ALAND>
+    <ogr:AWATER>36220865.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.5743432</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.9117215</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="40.672699429801568" lon="-120.593233290545996">
+  <name>Lassen</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>035</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01693324</ogr:COUNTYNS>
+    <ogr:GEOID>06035</ogr:GEOID>
+    <ogr:NAMELSAD>Lassen County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>11762091407.0</ogr:ALAND>
+    <ogr:AWATER>462950203.0</ogr:AWATER>
+    <ogr:INTPTLAT>+40.7152866</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.6212225</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.506666325262557" lon="-122.330480233088849">
+  <name>Napa</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>055</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277292</ogr:COUNTYNS>
+    <ogr:GEOID>06055</ogr:GEOID>
+    <ogr:NAMELSAD>Napa County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1947606240.0</ogr:ALAND>
+    <ogr:AWATER>104444864.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.5070999</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.3259045</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="40.763722983891213" lon="-122.041380786594843">
+  <name>Shasta</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>089</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01682610</ogr:COUNTYNS>
+    <ogr:GEOID>06089</ogr:GEOID>
+    <ogr:NAMELSAD>Shasta County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>9778892920.0</ogr:ALAND>
+    <ogr:AWATER>185816636.0</ogr:AWATER>
+    <ogr:INTPTLAT>+40.7605142</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.0435558</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="36.239453013530436" lon="-121.306645936181084">
+  <name>Monterey</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>053</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277291</ogr:COUNTYNS>
+    <ogr:GEOID>06053</ogr:GEOID>
+    <ogr:NAMELSAD>Monterey County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>8499609697.0</ogr:ALAND>
+    <ogr:AWATER>1267806850.0</ogr:AWATER>
+    <ogr:INTPTLAT>+36.2401044</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.3155781</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="40.649196981019337" lon="-123.114056828815734">
+  <name>Trinity</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>105</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277317</ogr:COUNTYNS>
+    <ogr:GEOID>06105</ogr:GEOID>
+    <ogr:NAMELSAD>Trinity County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>8234265080.0</ogr:ALAND>
+    <ogr:AWATER>73407950.0</ogr:AWATER>
+    <ogr:INTPTLAT>+40.6478582</ogr:INTPTLAT>
+    <ogr:INTPTLON>-123.1146660</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.432187058253135" lon="-123.431321116663113">
+  <name>Mendocino</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>045</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277287</ogr:COUNTYNS>
+    <ogr:GEOID>06045</ogr:GEOID>
+    <ogr:NAMELSAD>Mendocino County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>9082586851.0</ogr:ALAND>
+    <ogr:AWATER>961786019.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.4323876</ogr:INTPTLAT>
+    <ogr:INTPTLON>-123.4428811</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="36.510049521884831" lon="-117.405627120755341">
+  <name>Inyo</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>027</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01804637</ogr:COUNTYNS>
+    <ogr:GEOID>06027</ogr:GEOID>
+    <ogr:NAMELSAD>Inyo County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>26410783053.0</ogr:ALAND>
+    <ogr:AWATER>77280938.0</ogr:AWATER>
+    <ogr:INTPTLAT>+36.5621604</ogr:INTPTLAT>
+    <ogr:INTPTLON>-117.4042092</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.938401259324564" lon="-118.883903075533254">
+  <name>Mono</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>051</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277290</ogr:COUNTYNS>
+    <ogr:GEOID>06051</ogr:GEOID>
+    <ogr:NAMELSAD>Mono County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>7896625263.0</ogr:ALAND>
+    <ogr:AWATER>214695142.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.9158363</ogr:INTPTLAT>
+    <ogr:INTPTLON>-118.8751668</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.027651310914159" lon="-119.954940229902206">
+  <name>Tuolumne</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>109</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277319</ogr:COUNTYNS>
+    <ogr:GEOID>06109</ogr:GEOID>
+    <ogr:NAMELSAD>Tuolumne County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>5752133238.0</ogr:ALAND>
+    <ogr:AWATER>138668837.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.0214344</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.9647335</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.266802429639824" lon="-121.940182317723469">
+  <name>Solano</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>095</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277312</ogr:COUNTYNS>
+    <ogr:GEOID>06095</ogr:GEOID>
+    <ogr:NAMELSAD>Solano County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2128287124.0</ogr:ALAND>
+    <ogr:AWATER>218615209.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.2672255</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.9395940</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="34.841708980709541" lon="-116.176668590511582">
+  <name>San Bernardino</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>071</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277300</ogr:COUNTYNS>
+    <ogr:GEOID>06071</ogr:GEOID>
+    <ogr:NAMELSAD>San Bernardino County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>51976311092.0</ogr:ALAND>
+    <ogr:AWATER>96418406.0</ogr:AWATER>
+    <ogr:INTPTLAT>+34.8566615</ogr:INTPTLAT>
+    <ogr:INTPTLON>-116.1815707</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.923544817902197" lon="-121.950943219485353">
+  <name>Contra Costa</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>013</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675903</ogr:COUNTYNS>
+    <ogr:GEOID>06013</ogr:GEOID>
+    <ogr:NAMELSAD>Contra Costa County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1856752855.0</ogr:ALAND>
+    <ogr:AWATER>225364427.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.9194790</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.9515431</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.597098731253325" lon="-119.820601955883021">
+  <name>Alpine</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>003</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675840</ogr:COUNTYNS>
+    <ogr:GEOID>06003</ogr:GEOID>
+    <ogr:NAMELSAD>Alpine County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1912292607.0</ogr:ALAND>
+    <ogr:AWATER>12557304.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.6217831</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.7983522</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.778919099000426" lon="-120.525048896022597">
+  <name>El Dorado</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>017</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277273</ogr:COUNTYNS>
+    <ogr:GEOID>06017</ogr:GEOID>
+    <ogr:NAMELSAD>El Dorado County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>4423288012.0</ogr:ALAND>
+    <ogr:AWATER>203364019.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.7856116</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.5342245</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.686557026409744" lon="-121.900556149198763">
+  <name>Yolo</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>113</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277321</ogr:COUNTYNS>
+    <ogr:GEOID>06113</ogr:GEOID>
+    <ogr:NAMELSAD>Yolo County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2623627933.0</ogr:ALAND>
+    <ogr:AWATER>22888380.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.6796091</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.9027500</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.268753591637449" lon="-121.351804427501278">
+  <name>Yuba</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>115</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277322</ogr:COUNTYNS>
+    <ogr:GEOID>06115</ogr:GEOID>
+    <ogr:NAMELSAD>Yuba County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1636887866.0</ogr:ALAND>
+    <ogr:AWATER>31084093.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.2701300</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.3442587</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="36.605510740421401" lon="-121.074081050713843">
+  <name>San Benito</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>069</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277299</ogr:COUNTYNS>
+    <ogr:GEOID>06069</ogr:GEOID>
+    <ogr:NAMELSAD>San Benito County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3596591085.0</ogr:ALAND>
+    <ogr:AWATER>4719300.0</ogr:AWATER>
+    <ogr:INTPTLAT>+36.6116507</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.0858108</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="40.702815409695781" lon="-123.91632233423654">
+  <name>Humboldt</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>023</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01681908</ogr:COUNTYNS>
+    <ogr:GEOID>06023</ogr:GEOID>
+    <ogr:NAMELSAD>Humboldt County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>9241141220.0</ogr:ALAND>
+    <ogr:AWATER>1254150035.0</ogr:AWATER>
+    <ogr:INTPTLAT>+40.7066554</ogr:INTPTLAT>
+    <ogr:INTPTLON>-123.9261757</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="33.746375221613064" lon="-115.993934847950754">
+  <name>Riverside</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>065</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277297</ogr:COUNTYNS>
+    <ogr:GEOID>06065</ogr:GEOID>
+    <ogr:NAMELSAD>Riverside County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>18671846195.0</ogr:ALAND>
+    <ogr:AWATER>242807981.0</ogr:AWATER>
+    <ogr:INTPTLAT>+33.7298275</ogr:INTPTLAT>
+    <ogr:INTPTLON>-116.0022389</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="35.343431904899603" lon="-118.729057004816568">
+  <name>Kern</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>029</ogr:COUNTYFP>
+    <ogr:COUNTYNS>02054176</ogr:COUNTYNS>
+    <ogr:GEOID>06029</ogr:GEOID>
+    <ogr:NAMELSAD>Kern County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>21068705437.0</ogr:ALAND>
+    <ogr:AWATER>78332288.0</ogr:AWATER>
+    <ogr:INTPTLAT>+35.3466288</ogr:INTPTLAT>
+    <ogr:INTPTLON>-118.7295064</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.177516673966721" lon="-122.236725531507332">
+  <name>Colusa</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>011</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675902</ogr:COUNTYNS>
+    <ogr:GEOID>06011</ogr:GEOID>
+    <ogr:NAMELSAD>Colusa County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2980245446.0</ogr:ALAND>
+    <ogr:AWATER>14696164.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.1777385</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.2375629</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="41.744717238893017" lon="-123.957653233789856">
+  <name>Del Norte</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>015</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01682074</ogr:COUNTYNS>
+    <ogr:GEOID>06015</ogr:GEOID>
+    <ogr:NAMELSAD>Del Norte County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2606049835.0</ogr:ALAND>
+    <ogr:AWATER>578810831.0</ogr:AWATER>
+    <ogr:INTPTLAT>+41.7499033</ogr:INTPTLAT>
+    <ogr:INTPTLON>-123.9809983</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="41.589746668405219" lon="-120.725013636222556">
+  <name>Modoc</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>049</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277289</ogr:COUNTYNS>
+    <ogr:GEOID>06049</ogr:GEOID>
+    <ogr:NAMELSAD>Modoc County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>10225877725.0</ogr:ALAND>
+    <ogr:AWATER>660503268.0</ogr:AWATER>
+    <ogr:INTPTLAT>+41.5929185</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.7183704</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="36.758486614209183" lon="-119.653416040772299">
+  <name>Fresno</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>019</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277274</ogr:COUNTYNS>
+    <ogr:GEOID>06019</ogr:GEOID>
+    <ogr:NAMELSAD>Fresno County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>15432139293.0</ogr:ALAND>
+    <ogr:AWATER>136609893.0</ogr:AWATER>
+    <ogr:INTPTLAT>+36.7610058</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.6550193</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.217809271100826" lon="-119.764746490382365">
+  <name>Madera</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>039</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277284</ogr:COUNTYNS>
+    <ogr:GEOID>06039</ogr:GEOID>
+    <ogr:NAMELSAD>Madera County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>5534591551.0</ogr:ALAND>
+    <ogr:AWATER>42271836.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.2098213</ogr:INTPTLAT>
+    <ogr:INTPTLON>-119.7498023</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.232429169798522" lon="-121.695832133285052">
+  <name>Santa Clara</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>085</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277307</ogr:COUNTYNS>
+    <ogr:GEOID>06085</ogr:GEOID>
+    <ogr:NAMELSAD>Santa Clara County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3343892723.0</ogr:ALAND>
+    <ogr:AWATER>33595850.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.2216142</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.6895401</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="40.126100740231323" lon="-122.234517613574852">
+  <name>Tehama</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>103</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01692767</ogr:COUNTYNS>
+    <ogr:GEOID>06103</ogr:GEOID>
+    <ogr:NAMELSAD>Tehama County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>7638229338.0</ogr:ALAND>
+    <ogr:AWATER>33767224.0</ogr:AWATER>
+    <ogr:INTPTLAT>+40.1261573</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.2322737</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.9344307823335" lon="-121.271661527728739">
+  <name>San Joaquin</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>077</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277303</ogr:COUNTYNS>
+    <ogr:GEOID>06077</ogr:GEOID>
+    <ogr:NAMELSAD>San Joaquin County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3605878834.0</ogr:ALAND>
+    <ogr:AWATER>89000661.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.9349815</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.2722440</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.650582516915598" lon="-121.917799547344941">
+  <name>Alameda</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>001</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675839</ogr:COUNTYNS>
+    <ogr:GEOID>06001</ogr:GEOID>
+    <ogr:NAMELSAD>Alameda County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1910010507.0</ogr:ALAND>
+    <ogr:AWATER>216909647.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.6471385</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.9124880</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.30170704165198" lon="-120.769545109218598">
+  <name>Nevada</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>057</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01682927</ogr:COUNTYNS>
+    <ogr:GEOID>06057</ogr:GEOID>
+    <ogr:NAMELSAD>Nevada County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2480587300.0</ogr:ALAND>
+    <ogr:AWATER>41531993.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.2975082</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.7713429</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.666565396609727" lon="-121.600701744929225">
+  <name>Butte</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>007</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675842</ogr:COUNTYNS>
+    <ogr:GEOID>06007</ogr:GEOID>
+    <ogr:NAMELSAD>Butte County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>4238488704.0</ogr:ALAND>
+    <ogr:AWATER>105260548.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.6653362</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.6032086</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.191674865057934" lon="-120.718434627188941">
+  <name>Merced</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>047</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277288</ogr:COUNTYNS>
+    <ogr:GEOID>06047</ogr:GEOID>
+    <ogr:NAMELSAD>Merced County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>5019407132.0</ogr:ALAND>
+    <ogr:AWATER>105277636.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.1948063</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.7228019</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="36.22000159531747" lon="-118.800362050788436">
+  <name>Tulare</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>107</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277318</ogr:COUNTYNS>
+    <ogr:GEOID>06107</ogr:GEOID>
+    <ogr:NAMELSAD>Tulare County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>12493840855.0</ogr:ALAND>
+    <ogr:AWATER>37260863.0</ogr:AWATER>
+    <ogr:INTPTLAT>+36.2288339</ogr:INTPTLAT>
+    <ogr:INTPTLON>-118.7810551</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.558935262739716" lon="-120.998499963567028">
+  <name>Stanislaus</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>099</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277314</ogr:COUNTYNS>
+    <ogr:GEOID>06099</ogr:GEOID>
+    <ogr:NAMELSAD>Stanislaus County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3875010966.0</ogr:ALAND>
+    <ogr:AWATER>46378767.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.5623162</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.0028311</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="33.676871732150275" lon="-117.776568320765293">
+  <name>Orange</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>059</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277294</ogr:COUNTYNS>
+    <ogr:GEOID>06059</ogr:GEOID>
+    <ogr:NAMELSAD>Orange County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>2053491982.0</ogr:ALAND>
+    <ogr:AWATER>406263283.0</ogr:AWATER>
+    <ogr:INTPTLAT>+33.6756872</ogr:INTPTLAT>
+    <ogr:INTPTLON>-117.7772068</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="33.039807757993415" lon="-115.365352251829194">
+  <name>Imperial</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>025</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277277</ogr:COUNTYNS>
+    <ogr:GEOID>06025</ogr:GEOID>
+    <ogr:NAMELSAD>Imperial County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>10814595263.0</ogr:ALAND>
+    <ogr:AWATER>790216760.0</ogr:AWATER>
+    <ogr:INTPTLAT>+33.0408143</ogr:INTPTLAT>
+    <ogr:INTPTLON>-115.3554001</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.034274506055972" lon="-121.694527224946768">
+  <name>Sutter</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>101</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277315</ogr:COUNTYNS>
+    <ogr:GEOID>06101</ogr:GEOID>
+    <ogr:NAMELSAD>Sutter County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1560975504.0</ogr:ALAND>
+    <ogr:AWATER>14811541.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.0361898</ogr:INTPTLAT>
+    <ogr:INTPTLON>-121.7039397</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="38.446612602462579" lon="-120.651676039757831">
+  <name>Amador</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>005</ogr:COUNTYFP>
+    <ogr:COUNTYNS>01675841</ogr:COUNTYNS>
+    <ogr:GEOID>06005</ogr:GEOID>
+    <ogr:NAMELSAD>Amador County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1539967071.0</ogr:ALAND>
+    <ogr:AWATER>29437120.0</ogr:AWATER>
+    <ogr:INTPTLAT>+38.4435493</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.6538580</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.099485775069503" lon="-122.752761888555881">
+  <name>Lake</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>033</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277281</ogr:COUNTYNS>
+    <ogr:GEOID>06033</ogr:GEOID>
+    <ogr:NAMELSAD>Lake County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3250647503.0</ogr:ALAND>
+    <ogr:AWATER>189100323.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.1080094</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.7452171</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="40.004691979200068" lon="-120.83791877359107">
+  <name>Plumas</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>063</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277296</ogr:COUNTYNS>
+    <ogr:GEOID>06063</ogr:GEOID>
+    <ogr:NAMELSAD>Plumas County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>6612400772.0</ogr:ALAND>
+    <ogr:AWATER>156387638.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.9922953</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.8243709</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.435897980775188" lon="-122.355571726768062">
+  <name>San Mateo</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>081</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277305</ogr:COUNTYNS>
+    <ogr:GEOID>06081</ogr:GEOID>
+    <ogr:NAMELSAD>San Mateo County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1161882953.0</ogr:ALAND>
+    <ogr:AWATER>757162988.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.4146725</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.3715457</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="41.593500481027569" lon="-122.540393567852334">
+  <name>Siskiyou</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>093</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277311</ogr:COUNTYNS>
+    <ogr:GEOID>06093</ogr:GEOID>
+    <ogr:NAMELSAD>Siskiyou County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>16261933230.0</ogr:ALAND>
+    <ogr:AWATER>179149815.0</ogr:AWATER>
+    <ogr:INTPTLAT>+41.5879861</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.5332868</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="37.021587343663192" lon="-122.009570230837198">
+  <name>Santa Cruz</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>087</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277308</ogr:COUNTYNS>
+    <ogr:GEOID>06087</ogr:GEOID>
+    <ogr:NAMELSAD>Santa Cruz County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>1152818088.0</ogr:ALAND>
+    <ogr:AWATER>419720203.0</ogr:AWATER>
+    <ogr:INTPTLAT>+37.0123466</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.0077889</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="39.598496177777839" lon="-122.392006871384879">
+  <name>Glenn</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>021</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277275</ogr:COUNTYNS>
+    <ogr:GEOID>06021</ogr:GEOID>
+    <ogr:NAMELSAD>Glenn County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>3403160299.0</ogr:ALAND>
+    <ogr:AWATER>33693344.0</ogr:AWATER>
+    <ogr:INTPTLAT>+39.6025462</ogr:INTPTLAT>
+    <ogr:INTPTLON>-122.4016998</ogr:INTPTLON>
+  </extensions>
+</wpt>
+<wpt lat="35.38751891535501" lon="-120.450737286176206">
+  <name>San Luis Obispo</name>
+  <extensions>
+    <ogr:STATEFP>06</ogr:STATEFP>
+    <ogr:COUNTYFP>079</ogr:COUNTYFP>
+    <ogr:COUNTYNS>00277304</ogr:COUNTYNS>
+    <ogr:GEOID>06079</ogr:GEOID>
+    <ogr:NAMELSAD>San Luis Obispo County</ogr:NAMELSAD>
+    <ogr:LSAD>06</ogr:LSAD>
+    <ogr:CLASSFP>H1</ogr:CLASSFP>
+    <ogr:MTFCC>G4020</ogr:MTFCC>
+    <ogr:FUNCSTAT>A</ogr:FUNCSTAT>
+    <ogr:ALAND>8549160509.0</ogr:ALAND>
+    <ogr:AWATER>815630594.0</ogr:AWATER>
+    <ogr:INTPTLAT>+35.3881891</ogr:INTPTLAT>
+    <ogr:INTPTLON>-120.4488974</ogr:INTPTLON>
+  </extensions>
+</wpt>
+</gpx>
