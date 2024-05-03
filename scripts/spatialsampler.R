@@ -9,21 +9,23 @@ library(rmapshaper)
 library(tidyverse)
 mapviewOptions(fgb=FALSE)
 
-start_point <- sf::st_as_sf(data.frame(x = -122.42048, y = 38.83013),
-                            coords = c("x", "y"), crs = 4326)
-
+start_point <- sf::st_as_sf(
+  data.frame(x = -122.42048, y = 38.83013),
+  coords = c("x", "y"), crs = 4326)
 mapview(start_point)
 
-dat_temp <- plot_nhdplus(start_point,actually_plot = FALSE, )
+dat_temp <- plot_nhdplus(start_point,actually_plot = FALSE)
 
 plot(dat_temp$basin$geometry)
 plot(dat_temp$flowline$geometry, add=TRUE, col = "steelblue")
 
 # get huc12
 h12 <- get_huc(AOI = dat_temp$basin$geometry, type="huc12")
-h12 <- h12 |> st_transform(3310)
-plot(h12$geometry)
 
+plot(h12$geometry)
+plot(dat_temp$basin$geometry, add=TRUE, col=alpha("cyan4", 0.2))
+plot(dat_temp$flowline$geometry, add=TRUE, col = "steelblue", lwd=2)
+plot(start_point, pch=21, add=TRUE, bg = "orange")
 
 # Generate Random Points --------------------------------------------------
 
