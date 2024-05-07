@@ -33,6 +33,8 @@ dat_geo <- dat |> rename(latitude=y_lat, longitude=x_lon) |>
 # crop to just ca pts
 dat_geo_ca <- dat_geo[ ca,]
 
+mapview(dat_geo_ca)
+
 # set defaults
 #set_defaults(map_service = "osm", map_type = "topographic")
 #set_defaults(map_service = "esri", map_type = "natgeo_world_map")
