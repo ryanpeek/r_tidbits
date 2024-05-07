@@ -7,6 +7,7 @@ library(mapview)      # interactive maps!
 mapviewOptions(fgb = FALSE)
 library(basemaps)
 library(tigris)
+options(tigris_use_cache = TRUE)
 library(terra)
 library(tidyterra)
 
@@ -17,7 +18,11 @@ form_data <- paste0("https://docs.google.com/spreadsheets/d/e/",
                     "/pub?gid=1462593645&single=true&output=csv")
 
 # read in url and clean
-dat <- read_csv(form_data) |>
+dats <- read_csv("../../../Downloads/data_viz.csv")
+
+dat <-
+  #read_csv(form_data) |>
+  dats |>
   clean_names() |>
   rename( dining_name = 3, dining_address = 4)
 
