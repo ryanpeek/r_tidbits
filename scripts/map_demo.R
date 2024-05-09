@@ -7,7 +7,7 @@
 
 
 # Libraries ---------------------------------------------------------------
-
+library(tidyverse)
 library(readr)    # wrangle data and read it
 library(dplyr)    # tidy data
 library(janitor)      # clean column names
