@@ -1,9 +1,9 @@
 
-# check out pacman
+# check out pacman to install lots of things at once
 # install.packages("pacman")
-library(pacman)
-p_load(tidyverse, janitor, glue, sf, mapview,
-       basemaps, tigris, terra, tidyterra)
+# library(pacman)
+#p_load(tidyverse, janitor, glue, sf, mapview,
+#       basemaps, tigris, terra, tidyterra)
 
 
 # Libraries ---------------------------------------------------------------
@@ -15,9 +15,11 @@ library(glue)         # modern paste() function
 library(sf)           # make spatial data
 library(mapview)      # interactive maps!
 mapviewOptions(fgb = FALSE)
-library(basemaps) # basemaps like topo and satellite
+
 library(tigris) # US boundaries
 options(tigris_use_cache = TRUE)
+
+library(basemaps) # basemaps like topo and satellite
 library(terra) # spatial raster vector package
 library(tidyterra) # ggplot functions for terra
 library(ggspatial) # north arrow, scale bars for ggplot
