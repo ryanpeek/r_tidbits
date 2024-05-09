@@ -1,14 +1,24 @@
 
-library(tidyverse)    # wrangle data
+# check out pacman
+# install.packages("pacman")
+library(pacman)
+p_load(tidyverse, janitor, glue, sf, mapview,
+       basemaps, tigris, terra, tidyterra)
+
+
+# Libraries ---------------------------------------------------------------
+
+library(readr)    # wrangle data and read it
+library(dplyr)    # tidy data
 library(janitor)      # clean column names
 library(glue)         # modern paste() function
 library(sf)           # make spatial data
 library(mapview)      # interactive maps!
 mapviewOptions(fgb = FALSE)
-library(basemaps)
-library(tigris)
-library(terra)
-library(tidyterra)
+library(basemaps) # basemaps like topo and satellite
+library(tigris) # US boundaries
+library(terra) # spatial raster vector package
+library(tidyterra) # ggplot functions for terra
 
 # the url for the Form data
 form_data <- paste0("https://docs.google.com/spreadsheets/d/e/",
@@ -17,9 +27,9 @@ form_data <- paste0("https://docs.google.com/spreadsheets/d/e/",
                     "/pub?gid=1462593645&single=true&output=csv")
 
 # read in url and clean
-dat <- read_csv(form_data) |>
-  clean_names() |>
-  rename( dining_name = 3, dining_address = 4)
+dat <- readr::read_csv(form_data) |>
+  janitor::clean_names() |>
+  dplyr::rename( dining_name = 3, dining_address = 4)
 
 # get states and counties
 ca <- tigris::states() |> filter(STUSPS=="CA") |> st_transform(4326)
@@ -28,7 +38,8 @@ cnty <- tigris::counties(state = "CA") |> st_transform(4326)
 # make into sf object so we can map
 dat_geo <- dat |> rename(latitude=y_lat, longitude=x_lon) |>
   filter(!is.na(latitude) & !is.na(longitude)) |>
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326, remove = FALSE)
+  sf::st_as_sf(coords = c("longitude", "latitude"),
+               crs = 4326, remove = FALSE)
 
 # crop to just ca pts
 dat_geo_ca <- dat_geo[ ca,]
