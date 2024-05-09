@@ -17,8 +17,10 @@ library(mapview)      # interactive maps!
 mapviewOptions(fgb = FALSE)
 library(basemaps) # basemaps like topo and satellite
 library(tigris) # US boundaries
+options(tigris_use_cache = TRUE)
 library(terra) # spatial raster vector package
 library(tidyterra) # ggplot functions for terra
+library(basemaps)
 
 # the url for the Form data
 form_data <- paste0("https://docs.google.com/spreadsheets/d/e/",
@@ -30,6 +32,14 @@ form_data <- paste0("https://docs.google.com/spreadsheets/d/e/",
 dat <- readr::read_csv(form_data) |>
   janitor::clean_names() |>
   dplyr::rename( dining_name = 3, dining_address = 4)
+
+dats <- read_csv("../../../Downloads/data_viz.csv")
+
+dat <-
+  #read_csv(form_data) |>
+  dats |>
+  clean_names() |>
+  rename( dining_name = 3, dining_address = 4)
 
 # get states and counties
 ca <- tigris::states() |> filter(STUSPS=="CA") |> st_transform(4326)
@@ -82,7 +92,7 @@ cnty_terra <- terra::rast(cnty_rast) # convert to terra
 cnty_terra_mask <- terra::crop(cnty_terra, st_transform(cnty[cnty$NAME=="Sacramento",], 3857),
                                mask=TRUE)
 
-
+# county map
 cnty_map <-
   ggplot() +
   # cropped only

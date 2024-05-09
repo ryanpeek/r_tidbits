@@ -8,9 +8,11 @@ library(tidyverse)
 library(sf)
 library(glue)
 library(tigris)
+options(tigris_use_cache = TRUE)
 library(nhdplusTools)
-library(arrow)
-library(geoarrow) # remotes::install_github("paleolimbot/geoarrow")
+#library(arrow)
+library(sfarrow)
+#library(geoarrow) # remotes::install_github("paleolimbot/geoarrow")
 library(rmapshaper)
 library(mapview)
 mapviewOptions(fgb=FALSE)
@@ -19,23 +21,23 @@ source("scripts/f_get_fonts.R")
 # Get State/Counties ------------------------------------------------------
 
 ca <- tigris::states(progress_bar=FALSE) %>% filter(NAME=="California")
-ca_cnty <- counties("CA", cb = TRUE, progress_bar = FALSE)
+ca_cnty <- counties("CA", cb = TRUE, progress_bar = TRUE)
 ca_cnty <- st_cast(ca_cnty, "MULTIPOLYGON")
 #write_geoparquet(ca_cnty, "data_raw/ca_cntys.parquet")
-ca_cnty <- read_geoparquet_sf("data_raw/ca_cntys.parquet")
+ca_cnty <- st_read_parquet("data_raw/ca_cntys.parquet")
 
 # Get HUC Watersheds ------------------------------------------------------
 
 # can specify any given option for huc8, huc10, etc
 # specify CA boundary
 # huc8 <- nhdplusTools::get_huc(ca, type = "huc08") # this takes a minute or two
-# huc8 <- st_cast(huc8, "MULTIPOLYGON") # fix geometry
+huc8 <- st_cast(huc8, "MULTIPOLYGON") # fix geometry
 # save out
-# write_geoparquet(huc8, here("data_raw/nhd_huc08.parquet"))
+sfarrow::st_write_parquet(huc8, here("data_raw/nhd_huc08.parquet"))
 
 # Watershed ---------------------------------------------------------------
 # load
-h8 <- read_geoparquet_sf(here("data_raw/nhd_huc08.parquet")) %>%
+h8 <- st_read_parquet(here("data_raw/nhd_huc08.parquet")) %>%
    st_transform(3310)
 
 # pull out a single watershed
@@ -47,10 +49,10 @@ h8_sel_mrg <- rmapshaper::ms_dissolve(h8_sel)
 plot(h8_sel_mrg$geometry)
 
 # get water data
-# ca_water <- tigris::area_water("CA", tigris::list_counties("CA")$county)
+#ca_water <- tigris::area_water("CA", tigris::list_counties("CA")$county)
 # save out water data
-# write_geoparquet(ca_water, here::here("data_raw/tigris_ca_cnty_water_data.parquet"))
-ca_water <- read_geoparquet_sf(here("data_raw/tigris_ca_cnty_water_data.parquet"))
+#st_write_parquet(ca_water, here::here("data_raw/tigris_ca_cnty_water_data.parquet"))
+ca_water <- st_read_parquet(here("data_raw/tigris_ca_cnty_water_data.parquet"))
 ca_water <- st_transform(ca_water, st_crs(h8_sel_mrg))
 
 # now crop by watershed
@@ -69,7 +71,7 @@ shed_rivs <- get_nhdplus(h8_sel_mrg)
 # Base Map ----------------------------------------------------------------
 
 # set fonts depending on system:
-f_get_fonts()
+#f_get_fonts()
 
 # quick map
 plot(h8_sel$geometry, border = "gray50", lty=2)
