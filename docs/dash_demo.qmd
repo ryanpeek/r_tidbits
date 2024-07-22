@@ -1,0 +1,104 @@
+---
+title: "dashdash demo"
+format: 
+  dashboard:
+    logo: img/cheetah_fade.png
+    
+editor_options: 
+  chunk_output_type: console
+---
+
+# Tab 1
+
+Can use some simple icons from [bootstrap](https://icons.getbootstrap.com/):
+
+<i class="bi bi-water"></i>, <i class="bi bi-umbrella"></i>, <i class="bi bi-globe-americas"></i>
+
+## Row
+
+```{r}
+#| title: "Plot 1"
+
+library(tidyverse)
+ggplot(data=palmerpenguins::penguins) + 
+  geom_point(aes(x=bill_length_mm, y=bill_depth_mm, fill=species), pch=21, size=2.4, alpha=0.4) +
+  scale_fill_viridis_d() + 
+  cowplot::theme_cowplot() + cowplot::background_grid(major="xy")
+```
+
+```{r}
+#| title: "Plot 2"
+
+library(tidyverse)
+ggplot(data=palmerpenguins::penguins) + 
+  geom_col(aes(x = island, y=bill_length_mm, group=species, fill=species),size=2.4, alpha=0.4) +
+  scale_fill_viridis_d() + 
+  cowplot::theme_cowplot() + cowplot::background_grid(major="xy")
+```
+
+
+## Row
+
+::: {.valuebox color="#F52A32"}
+
+<i class="bi bi-clock-history" style="font-size: 70px;"></i>
+
+**Last updated:**
+**`r Sys.Date()`**
+
+
+:::
+
+```{r}
+#| title: "Plot 3"
+
+ggplot(data=palmerpenguins::penguins) + 
+  geom_point(aes(x=flipper_length_mm, y=body_mass_g, fill=species), pch=21, size=2.4, alpha=0.4) +
+  scale_fill_viridis_d() + 
+  geom_smooth(aes(x=flipper_length_mm, y=body_mass_g, color=species), method = "gam") +
+  scale_color_viridis_d()+
+  cowplot::theme_cowplot() + cowplot::background_grid(major="xy")
+```
+
+### Column
+
+```{r}
+#| content: valuebox
+#| title: "Spam per day"
+n <- mtcars |> tibble::as_tibble() |> dplyr::count() |> dplyr::pull(n)
+
+list(
+  color = "#F19B09",
+  value = n,
+  icon = "trash"
+)
+```
+
+# Tab 2
+
+Maybe another tab?
+
+<i class="bi bi-water"></i>, <i class="bi bi-umbrella"></i>, <i class="bi bi-globe-americas"></i>
+
+## Row
+
+```{r}
+#| title: "Plot 1"
+
+library(tidyverse)
+ggplot(data=palmerpenguins::penguins) + 
+  geom_point(aes(x=bill_length_mm, y=bill_depth_mm, fill=species), pch=21, size=2.4, alpha=0.4) +
+  scale_fill_viridis_d() + 
+  cowplot::theme_cowplot() + cowplot::background_grid(major="xy")
+```
+
+```{r}
+#| title: "Plot 2"
+
+library(tidyverse)
+ggplot(data=palmerpenguins::penguins) + 
+  geom_col(aes(x = island, y=bill_length_mm, group=species, fill=species),size=2.4, alpha=0.4) +
+  scale_fill_viridis_d() + 
+  cowplot::theme_cowplot() + cowplot::background_grid(major="xy")
+```
+
