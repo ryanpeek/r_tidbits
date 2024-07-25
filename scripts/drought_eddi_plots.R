@@ -34,10 +34,10 @@ bb <- st_bbox(border)
 # example file name: EDDI_ETrs_02wk_19801215.asc
 
 # params
-# stdate <- "20140715"
+stdate <- "20140715"
+time_int <- "mn" # week: wk, month: mn
+time_dur <- 3 # two digit number
 # yr <- year(ymd(stdate))
-# time_int <- "mn" # week: wk, month: mn
-# time_dur <- 3 # two digit number
 # time_dur <- str_pad(time_dur, width = 2, side = "left", pad = 0)
 # mon <- month.name[month(ymd(stdate))] # for plotting
 # eddi_path <- "https://downloads.psl.noaa.gov/Projects/EDDI/CONUS_archive/data"
@@ -78,7 +78,6 @@ eddi_mask <- terra::mask(eddi_crop, vect(border))
 
 eddi_df <- extract(eddi_dat, vect(border), method="bilinear", xy=TRUE, ID=FALSE) |>
   mutate(date = ymd(stdate)) |> rename(eddi=1)
-
 
 # GGPLOT ------------------------------------------------------------------
 
