@@ -8,7 +8,6 @@ library(rnaturalearth)
 library(tigris)
 library(glue)
 
-
 # Get Data ----------------------------------------------------------------
 
 # download data
