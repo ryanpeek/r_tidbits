@@ -1,0 +1,175 @@
+---
+title: "(WIP) Scrollytelling demo"
+subtitle: "(Partially) driven by scrollama.js"
+author: "James Goldie"
+format:
+  html:
+    toc: true
+    code-tools: true
+---
+
+::: {.callout-note}
+This is still a work in progress! I'm hoping to continue exploring more complex scrollytelling techniques.
+:::
+
+Fancy JS libraries like [`scrollama.js`](https://github.com/russellgoldenberg/scrollama) help you track which elements are visible based on scroll so that you can do things to update them.
+
+But the basics of getting elements to stick are just done with one bit of CSS: using `position: sticky` and then using `top`/`left`/`right`/`bottom` to define the point (for its parent block) at which the content "sticks".
+
+Let's see how that works with some standard Quarto `.columns`. (I've made also made the columns a bit wider with `.column-body-outset`, 'cause it looks classy.)
+
+# Demo: A sticky but unchanging right column
+
+::::: {.columns .column-body-outset}
+
+:::: {.column width="35%"}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut accumsan rhoncus turpis, id condimentum augue dignissim vel. Suspendisse varius ex nec ligula dictum, vel vestibulum felis bibendum. Cras id mauris posuere, tempus quam at, vehicula eros. Mauris lobortis ante at dapibus blandit. Praesent hendrerit purus quis urna auctor congue. Etiam ut purus mattis, fringilla magna ac, rhoncus enim. Maecenas luctus turpis nisl, sit amet efficitur mauris viverra vel. In dignissim vehicula nunc, vel scelerisque ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla ac pulvinar justo. Sed quis felis odio. Aliquam erat volutpat. Duis ornare ligula tincidunt, volutpat erat in, tristique enim. Nullam id neque sed odio consectetur imperdiet. Cras non malesuada enim, eget hendrerit nunc.
+
+Suspendisse at diam a purus dictum bibendum. Sed eu volutpat sem. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque at porttitor leo. Mauris laoreet nibh arcu, hendrerit posuere quam auctor eget. Quisque vulputate felis et bibendum dapibus. Ut varius in risus nec finibus. Sed vitae nisl in nisl gravida consectetur. Maecenas ac libero non arcu ultricies porta non sit amet lorem.
+
+Cras ac euismod quam. Proin tempor hendrerit ullamcorper. Aliquam eu elementum neque. Nunc purus dui, fringilla quis pretium vitae, accumsan eget massa. Pellentesque dignissim justo nec velit ullamcorper accumsan. Proin ultrices nisi ac convallis varius. Morbi at leo nisl. Nam condimentum quis mi sed ultricies. Sed vel diam dictum, scelerisque enim sit amet, feugiat nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean at tortor vel ipsum suscipit porta.
+::::
+
+:::: {.column width="10%"}
+::::
+
+:::: {.column width="55%" style="padding:20px; position:sticky;top:100px;background-color:goldenrod"}
+
+This whole column has `position:sticky;` and `top:100px` on it!
+
+::: {style="background-color: #333; color: white; height: 200px; text-align: center; padding: 20px;"}
+(You could have a figure here... or some bullet points... anything that you think is relevant to an extended section of your report, really!)
+:::
+::::
+
+:::::
+
+# Sticky overlays
+
+The other common style is to have some full-width content stick but only cover part of the page.
+
+For this, we'll need a parent to be the start/end of the sticky zone (equivalent to our `.columns` before). In this case, because I've created a heading in the next section, Quarto automatically puts it and the content below it in a `<section>`, so there's no need to add another wrapper.
+
+We'll also need a container for our hero image that has:
+
+* `position:sticky`
+* `top: 0` will make it stick once the top of the section hits the top of the screen (so you won't see content sneaking past up the top)
+* `background-image: url(...)` loads the image into it, and
+* `background-size: cover` appropriately sizes it for all screens
+* `height: 60vh` sizes it to 60% of the screen height, leaving 40% for the text underneath.
+  - (You could set it to `100vh` if you just wanted the content to be the whole jam, but since our sticky content isn't _doing_ anything yet, I think that's a bad idea. You typically want people to see _something_ happening when they scroll!)
+* I've also given it Quarto's `.column-screen` class to make it stretch across the screen.
+
+Let's see how it looks!
+
+## Demo: sticky overlay
+
+::: {.column-screen style="background-image:url(https://unsplash.com/photos/KPaSCpklCZw/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8NHx8bGlnaHRob3VzZXxlbnwwfHx8fDE2NTM0OTMzOTE&force=true); background-size: cover; height: 60vh; position: sticky; top: 0; "}
+:::
+
+_(This lighthouse photo is by [Everaldo Coelho](https://unsplash.com/photos/KPaSCpklCZw) on Unsplash!)_
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut accumsan rhoncus turpis, id condimentum augue dignissim vel. Suspendisse varius ex nec ligula dictum, vel vestibulum felis bibendum. Cras id mauris posuere, tempus quam at, vehicula eros. Mauris lobortis ante at dapibus blandit. Praesent hendrerit purus quis urna auctor congue. Etiam ut purus mattis, fringilla magna ac, rhoncus enim. Maecenas luctus turpis nisl, sit amet efficitur mauris viverra vel. In dignissim vehicula nunc, vel scelerisque ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla ac pulvinar justo. Sed quis felis odio. Aliquam erat volutpat. Duis ornare ligula tincidunt, volutpat erat in, tristique enim. Nullam id neque sed odio consectetur imperdiet. Cras non malesuada enim, eget hendrerit nunc.
+
+Suspendisse at diam a purus dictum bibendum. Sed eu volutpat sem. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque at porttitor leo. Mauris laoreet nibh arcu, hendrerit posuere quam auctor eget. Quisque vulputate felis et bibendum dapibus. Ut varius in risus nec finibus. Sed vitae nisl in nisl gravida consectetur. Maecenas ac libero non arcu ultricies porta non sit amet lorem.
+
+Cras ac euismod quam. Proin tempor hendrerit ullamcorper. Aliquam eu elementum neque. Nunc purus dui, fringilla quis pretium vitae, accumsan eget massa. Pellentesque dignissim justo nec velit ullamcorper accumsan. Proin ultrices nisi ac convallis varius. Morbi at leo nisl. Nam condimentum quis mi sed ultricies. Sed vel diam dictum, scelerisque enim sit amet, feugiat nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean at tortor vel ipsum suscipit porta.
+
+## Review
+
+This works great!
+
+Since this is all just CSS and both styles are structured very similarly, you could choose to have _both_ options depending on screen size (so overlay at mobile widths and columns at desktop sizes).
+
+But so far, nothing's _moving_ or _changing_. We'll need some JavaScript for that.
+
+# Using `scrollama.js`
+
+The idea with Scrollama is that it [keeps an eye on our scrolling](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) tells us when targeted objects are visible.
+
+This can achieve a variety of effects---not just the sticky effects we've used above! As well as using sticky patterns, it can draw attention to elements as they scroll in.
+
+This isn't an entirely JS-free endeavour, unfortunately. Once we've imported the library, we still need to:
+
+1. Use a `setup` function to tell scrollama which elements to target (let's say, anything with the `.step` class)
+2. Give it event handlers: functions that will run when something enters or exits.
+  - We need to define two event handlers; one for elements entering the view (`onStepEnter`) and another for them leaving the view (`onStepExit`).
+  - To start, let's keep it simple(r) and have them just apply or remove a CSS class, `.is-active`. (We'll add some CSS style to make them purple when they have this class!)
+
+# Demo: A flashy series of boxes
+
+```{ojs}
+//| output: false
+
+// import and instantiate the scrollama
+scrollama = require("scrollama@3.1.1")
+scroller = scrollama();
+
+// initialise the library and pass event handlers to 
+scroller
+  .setup({
+    step: ".step",
+  })
+  .onStepEnter((response) => {
+    // the box is passed to this function so we can change it!
+    console.log("Enter triggered")
+    console.log(response)
+    // { element, index, direction }
+    response.element.classList.add("is-active");
+
+  })
+  .onStepExit((response) => {
+    console.log("Exit triggered")
+    console.log(response)
+    // { element, index, direction }
+    response.element.classList.remove("is-active");
+  });
+```
+
+```{=html}
+<style>
+#columnscroller .step {
+  background-color: #ccc;
+  color: black;
+  height: 200px;
+  text-align: center;
+  padding: 20px;
+  transition: background-color 0.5s, color 0.5s, transform 0.5s;
+}
+
+/* here's how each box will look as we scroll past it */
+#columnscroller .step.is-active {
+  background-color: #5500cc;
+  color: white;
+  transform: rotate(1.25deg) scale(1.05);
+}
+</style>
+```
+
+:::: {#columnscroller}
+
+::: {.step style="margin-bottom: 100px;"}
+Here's our first box!
+:::
+
+::: {.step style="margin-bottom: 100px;"}
+And our second box!
+:::
+
+::: {.step}
+And a third, I guess.
+:::
+
+::::
+
+## Review
+
+This works nicely!
+
+If you open your browser's developer tools (Cmd+Opt+I on a Mac or Ctrl+Alt+I on Windows) and go to the Console pane, you can see it log the `response `object every time one of our event handlers fires (because an element scrolls into or out of view). Those are the `console.log` functions above.
+
+The `response` object that we're printing shows all the information we get when these event handlers fire.That includes not just the element being targeted, but also its index (TODO - is this its DOM order compared to similarly targeted things?) and the direction (`"up"` or `"down"`) by which it's exiting.
+
+You could theoretically use these event handlers, `onStepEnter` and `onStepExit`, to do anything. You could have the boxes being detected be invisible, for example, and just use them as trigger points - the actual thing being modified could be sticky and sitting at the top.
+
+TODO - Let's see how well that works with our two-column example from before.
