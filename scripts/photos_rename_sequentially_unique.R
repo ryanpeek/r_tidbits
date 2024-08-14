@@ -52,16 +52,16 @@ photo_list <- photo_list |>
 # make sure all photos have a unique name! (Below should return zero)
 photo_list |> group_by(pheno_name_uniq) |> tally() |> filter(n>1) |> nrow()
 
-# Preferred: Rename in Place Unique -----------------------------------------
+# Rename Photos in Place -----------------------------------------
 
-# rename photos in place (from same location you read them in)
-# using unique hash code appended to site_date_time
-fs::file_move(path = photo_list$path, new_path = glue("{fs::path_dir(photo_list$path)}/{photo_list$pheno_name_uniq}"))
-
-# Rename in Place Pheno  -----------------------------------------------------
-
-# For pheno timelapse we can rename in place using a
-# simple pheno_name assuming there are nu duplicates (photos at 15min or hourly interval)
-fs::file_move(path = photo_list$path, new_path = glue("{fs::path_dir(photo_list$path)}/{photo_list$pheno_name}"))
-
+# For 15 min or greater photo intervals we can rename in place as long as photos are unique
+# this code checks to see all photo names are unique using only datetime stamp
+# if not, it appends a unique random hash code to the site_date_time
+if(photo_list |> group_by(pheno_name) |> tally() |> filter(n>1) |> nrow()==0){
+  print("No duplicates, using simple phenoname: site_date_time")
+  fs::file_move(path = photo_list$path, new_path = glue("{fs::path_dir(photo_list$path)}/{photo_list$pheno_name}"))
+} else{
+  print("Duplicates present, appending unique random hash code site_date_time")
+  fs::file_move(path = photo_list$path, new_path = glue("{fs::path_dir(photo_list$path)}/{photo_list$pheno_name_uniq}"))
+}
 
