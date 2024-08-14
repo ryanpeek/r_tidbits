@@ -19,11 +19,14 @@ year <- 2024 # year of project
 cam_site <- "WOMY4" # Site ID (match exactly)
 
 # Full path to folder where photos are located
-# copy and paste from Windows in Explorer by clicking into the folder, then in the address bars:
-# right click and select "Copy address as text"
-# then paste between the parenthesis below (Ctrl + V)
-# make sure to check/remove any " after pasting
-photo_directory <- r'(C:\Users\RPeek\Desktop\Tst_pheno)'
+# this function helps select the folder and ensures there are images in the folder to use
+select_dir <- function(){
+  print("Select any image file WITHIN the folder you want to use:")
+  dirname(file.choose(new = TRUE))
+}
+
+photo_directory <- select_dir()
+photo_directory # double check this is correct!
 
 # Get Photo File List -----------------------------------------------------
 
