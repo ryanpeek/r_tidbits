@@ -21,3 +21,5 @@ data_raw/Full_Sp_Scores.csv
 slides/*
 /slides/
 data_raw/*gpkg
+**/*.html
+docs/*.html
