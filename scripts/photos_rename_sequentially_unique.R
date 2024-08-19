@@ -15,7 +15,6 @@ library(digest) # for uniq names
 # Set Paths ---------------------------------------------------------------
 
 # CHANGE/CHECK THESE!
-year <- 2024 # year of project
 cam_site <- "WOMY4" # Site ID (match exactly)
 
 # Full path to folder where photos are located
@@ -42,12 +41,12 @@ photo_list <- photo_list |> filter(!fs::path_ext(path)=="AVI")
 photo_list <- photo_list |>
   mutate(
     file_name = fs::path_file(path),
-    file_path = fs::path_dir(path),
-    datetime = ymd_hms(modification_time),
+    full_path = fs::path_dir(path),
+    datetime_fs = ymd_hms(modification_time),
     # create the photo filenames for renaming
-    pheno_name = glue("{cam_site}_{format(as_date(datetime), '%Y%m%d')}_{gsub(':', '', hms::as_hms(datetime))}.{path_ext(file_name)}"),
+    pheno_name = glue("{cam_site}_{format(as_date(datetime_fs), '%Y%m%d')}_{gsub(':', '', hms::as_hms(datetime_fs))}.{path_ext(file_name)}"),
     hashid = map_vec(path, ~digest::digest(.x, algo="crc32", serialize=FALSE)),
-    pheno_name_uniq = glue("{cam_site}_{format(as_date(datetime), '%Y%m%d')}_{gsub(':', '', hms::as_hms(datetime))}_{hashid}.{path_ext(file_name)}"))
+    pheno_name_uniq = glue("{cam_site}_{format(as_date(datetime), '%Y%m%d')}_{gsub(':', '', hms::as_hms(datetime_fs))}_{hashid}.{path_ext(file_name)}"))
 
 # make sure all photos have a unique name! (Below should return zero)
 photo_list |> group_by(pheno_name_uniq) |> tally() |> filter(n>1) |> nrow()
