@@ -20,7 +20,7 @@ library(extrafont)
 # extrafont::loadfonts(quiet=TRUE)
 
 library(tidyverse)
-library(geoarrow)
+library(sfarrow)
 library(mapview)
 mapviewOptions(fgb=TRUE)
 
