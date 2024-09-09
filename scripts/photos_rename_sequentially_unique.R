@@ -30,8 +30,7 @@ photo_directory # double check this is correct!
 # Get Photo File List -----------------------------------------------------
 
 # get a complete list of all the photos on the card or in the directory
-# note recurse=FALSE, no nested folders can be present
-# we want just the directory where photos exist
+# note recurse=FALSE, no nested folders can be present, so default to TRUE
 photo_list <- fs::dir_info(photo_directory, type = "file", recurse = TRUE)
 
 # filter out any videos (AVI):
@@ -50,6 +49,7 @@ photo_list <- photo_list |>
 
 # make sure all photos have a unique name! (Below should return zero)
 photo_list |> group_by(pheno_name_uniq) |> tally() |> filter(n>1) |> nrow()
+photo_list |> group_by(pheno_name) |> tally() |> filter(n>1) |> nrow()
 
 # Rename Photos in Place -----------------------------------------
 
@@ -63,4 +63,8 @@ if(photo_list |> group_by(pheno_name) |> tally() |> filter(n>1) |> nrow()==0){
   print("Duplicates present, appending unique random hash code site_date_time")
   fs::file_move(path = photo_list$path, new_path = glue("{fs::path_dir(photo_list$path)}/{photo_list$pheno_name_uniq}"))
 }
+
+# note: there were some oddities that seemed to occur when extracting datetimes with the {fs} package from data stored on OneDrive
+# if the timestamp is critical, use exiftools to extract the timestamp.
+# this just may take longer and requires some additional setup.
 
