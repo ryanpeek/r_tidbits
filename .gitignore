@@ -23,3 +23,4 @@ slides/*
 data_raw/*gpkg
 **/*.html
 docs/*.html
+docs/teaching_R_01_files/
