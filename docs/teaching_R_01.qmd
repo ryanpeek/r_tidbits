@@ -37,18 +37,18 @@ execute:
 ::: {.incremental}
 
 1. Reproducible
-2. Directions that can be shared
+2. Directions that can be shared and followed precisely
 2. Tools for repeated tasks/reporting
 3. Functions for manipulating data
 4. Project organization/Data management
-5. Maps and more data manipulation
+5. Maps & Spatial Fun!
 6. Visualizing data
+7. General sanity
 
 :::
 
 ## R Benefits
 
-- You don't have to use Excel
 - It's open source and community resources galore
 - it's **reproducible** for others (and your future self!)
 - easy to re-use, recycle skills you've used elsewhere
@@ -60,23 +60,55 @@ execute:
  
 ## Navigating RStudio
 
+![](https://www.r4wrds.com/intro/images/rstudio_edit.png)
+
 ## Navigating Code
 
- - Packages (libraries of code)
-    - contain *functions*
-        - which contain *verbs*
+ - Packages (like apps on your phone)
+    - contain *`functions()`*
+        - which contain *`arguments=`*
+        
+```{r}
+#| echo: true
+#| eval: false
+
+read.csv(file = ,
+         header = ,
+         skip = , 
+         stringsAsFactors = 
+        )
+
+
+readr::read_csv(file = ,
+         col_names = ,
+         show_col_types = ,
+         skip = , 
+         stringsAsFactors = 
+        )
+
+
+```
 
 ## Important Bits
 
-**`<-`** 
-  
-- save this temporarily for use later, in **Environment** tab (`Alt + -`)
+**`<-`** save this temporarily in **Environment** tab (`Alt + -`)
 
-**` |> `** or **` %>% `** 
+**` |> `** (or **` %>% `**) the pipe, read as "and then" (`Ctrl + Shift + m`)
 
- - "and then" (`Ctrl + Shift + m`)
+```{r}
+#| echo: true
+#| eval: false
+
+data_i_want <- read_csv(file = "my_super_data.csv")
+
+data_i_want_filtered <- data_i_want |> 
+  dplyr::filter(variable > 3)
+
+```
 
 ## Important Basics
+
+`{dplyr}` package has so much! These are the main ones to consider:
 
 `filter` keeps or discards **rows** (aka observations)
 
@@ -91,39 +123,23 @@ execute:
 `group_by`/`summarize` aggregates data (pivot tables!)
 
 
-## Suggestions: Quarto
 
-::: columns
-::: {.column width="50%"}
-Minimal chunk options
+## Spreadsheets!
 
-::: nonincremental
--   `label:`
--   `warning:`
--   `message:`
--   `echo:`
+ Visit this [url](https://www.tandfonline.com/doi/full/10.1080/00031305.2017.1375989#d1e617)
 
-:::
-:::
+![](https://www.r4wrds.com/intro/images/tidydata_1.jpg)
 
-::: {.column width="50%"}
-Minimal YAML
+## Spreadsheets!
 
-::: nonincremental
--   `title:`
--   `author:`
--   `format:`
--   `editor:`
-:::
-:::
-:::
+![](https://www.r4wrds.com/intro/images/tidydata_2.jpg)
 
-## In-class activity
 
-Render early and often!
+## Fun Activity 
+**Joint Activity**:
 
-::: nonincremental
--   provide check points to build habit
-
--   [Example Application Exercise](https://github.com/ElijahMeyer3/demo-ae)
-:::
+ - Pair up
+ - Someone volunteer to open any spreadsheet on your computer so you both can view
+ - **Without actually editing it** see what things you could do to make it tidy!?
+ - Make a list so we can see what are really common "untidy" things
+ - [fun art](https://allisonhorst.com/everything-else)

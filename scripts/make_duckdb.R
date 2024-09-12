@@ -31,8 +31,8 @@ rm(con)
 
 # Reconnect ---------------------------------------------------------------
 
-con <- dbConnect(duckdb(), dbdir = "data_raw/example.duckdb", read_only = FALSE)
-
+con <- dbConnect(duckdb(), dbdir = "data_raw/example.duckdb", read_only = TRUE)
+dbListTables(con)
 df <- tbl(con, 'df')
 df_raw <- tbl(con, 'df_raw')
 
@@ -50,6 +50,9 @@ df |> select(region, island, date_egg) |>
 rs <- dbSendQuery(con, "SELECT * FROM df LIMIT 10")
 DBI::dbColumnInfo(rs)
 
+res <- dbGetQuery(con, "SELECT * FROM iris_table LIMIT 1")
+print(res)
+
 
 
 # Trying without loading data first into R --------------------------------
@@ -60,3 +63,18 @@ DBI::dbColumnInfo(rs)
 # load a bunch of csv's into a db
 con <- DBI::dbConnect(duckdb::duckdb())
 duckdb::duckdb_read_csv(con, "gapminder", paths)
+
+## con <- dbConnect(duckdb(), dbdir = "my-db.duckdb", read_only = TRUE)
+## close: dbDisconnect(con, shutdown = TRUE)
+
+
+# one approach using duckdb and dplyr
+library("duckdb")
+library("dplyr")
+con <- dbConnect(duckdb())
+duckdb_register(con, "flights", nycflights13::flights)
+
+tbl(con, "flights") |>
+  group_by(dest) |>
+  summarise(delay = mean(dep_time, na.rm = TRUE)) |>
+  collect()
