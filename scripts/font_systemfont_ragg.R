@@ -5,7 +5,6 @@ library(glue)
 library(ggplot2)
 library(hrbrthemes)
 
-
 # select "AGG" graphics option in RStudio for rendering:
 # Tools > Global Options > General > Graphics > Select "AGG" under Backend
 
@@ -13,17 +12,17 @@ library(hrbrthemes)
 # download zip, unzip, and install following system req's
 
 # pick a font!
-fnt <- "Roboto Slab"
+fnt <- "Irish Grover"
 # Barlow,  Roboto, Schoolbell, Public Sans, Roboto Mono, Roboto Slab,
 # Roboto Condensed, IBM Plex Sans, Titillium Web
 
 # Download or load a font:
-# library(showtext)
-# showtext_opts(dpi=300)
-# showtext_auto(enable=TRUE)
+library(showtext)
+showtext_opts(dpi=300)
+showtext_auto(enable=TRUE)
 
 # add from google:
-# font_add_google(fnt)
+font_add_google(fnt)
 # add locally:
 # font_add(family = "<family_name>", regular = "/path/to/font/file")
 # showtext_auto()
@@ -48,6 +47,7 @@ fnt <- "Roboto Slab"
       subtitle = "A plot that is only useful for demonstration purposes",
       caption = glue("Brought to you by {fnt}")
     ) +
+    #cowplot::theme_cowplot(font_family = fnt))
     hrbrthemes::theme_ipsum(fnt))
 
 # save with ggplot2
