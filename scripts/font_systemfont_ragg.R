@@ -5,6 +5,8 @@ library(glue)
 library(ggplot2)
 library(hrbrthemes)
 
+# see reasonable colors: https://www.reasonable.work/colors/
+
 # select "AGG" graphics option in RStudio for rendering:
 # Tools > Global Options > General > Graphics > Select "AGG" under Backend
 
