@@ -78,3 +78,58 @@ tbl(con, "flights") |>
   group_by(dest) |>
   summarise(delay = mean(dep_time, na.rm = TRUE)) |>
   collect()
+
+
+# With Parquet! -----------------------------------------------------------
+
+# see here: https://r.iresmi.net/posts/2023/fast_remote_parquet/
+
+# query from web
+dataset <- "https://static.data.gouv.fr/resources/bureaux-de-vote-et-adresses-de-leurs-electeurs/20230626-135723/table-adresses-reu.parquet"
+
+library(duckdb)
+library(tidyverse)
+library(glue)
+
+cnx <- dbConnect(duckdb())
+
+# To do once:
+#dbExecute(cnx, "INSTALL httpfs")
+
+# load the query httpfs option
+dbExecute(cnx, "LOAD httpfs")
+
+# setup connection to dataset
+dbSendQuery(cnx, glue("
+  CREATE VIEW bureaux AS
+    SELECT *
+    FROM '{dataset}'"))
+
+# see available columns!
+dbGetQuery(cnx, "
+  DESCRIBE bureaux")
+
+# number of rows (2 sec for 15 million rows!)
+dbGetQuery(cnx, "
+  SELECT COUNT(*)
+  FROM bureaux")
+
+# now try with dbplyr
+bureaux <- tbl(cnx, "bureaux")
+
+# available columns
+colnames(bureaux)
+
+# number of rows
+bureaux |>
+  summarize(rows = n())
+
+# top communes by address number (takes a few secs)
+bureaux |>
+  group_by(code_commune_ref) |>
+  summarise(tot_nb_adresses = sum(nb_adresses))  |>
+  arrange(desc(tot_nb_adresses))
+
+
+# disconnect
+dbDisconnect(cnx, shutdown = TRUE)
