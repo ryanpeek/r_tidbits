@@ -36,6 +36,7 @@ counties_slim <- sf::st_difference(ca_tahoe, nhd_l)
 # http://www.bathybase.org
 tahbath <- "http://www.bathybase.org/Data/1-99/2/bathy.tiff"
 t_bath <- rast(tahbath)
+
 # plot
 plot(t_bath)
 plot(st_transform(nhd_l$geometry, 32610), add=TRUE, border.col="steelblue")
