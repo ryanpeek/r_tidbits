@@ -9,6 +9,7 @@ library(readr)
 library(glue)
 library(geomtextpath)
 library(wateRshedTools)
+#remotes::install_github("ryanpeek/wateRshedTools")
 library(tidyverse)
 library(lubridate)
 library(FlowScreen)
@@ -246,7 +247,7 @@ ggsave(filename = "figs/figure_drought_periods.png",
    geom_vline(xintercept=150, color="steelblue", lty=2) +
    scale_fill_viridis_d("WYT", option = "B") +
    #scale_color_viridis_d("Water Year\n Type") +
-   scale_y_continuous(breaks = seq(1942, year(Sys.Date()),4)) +
+   scale_y_continuous(breaks = seq(1942, year(Sys.Date()),3)) +
    hrbrthemes::theme_ft_rc() +
    ggrepel::geom_text_repel(data=df_cov, aes(y=hYear, x=Q50, label=hYear), color="gray70", size=2, family="Roboto Slab") +
    labs(title = "NFA Center of Volume (50% of total annual streamflow)",
@@ -286,7 +287,7 @@ ggplot() + geom_line(data=n17, aes(x=dateTime, y=Flow_Inst, color=Flow_Inst), sh
   hrbrthemes::theme_ipsum_ps() +
   labs(x="", y="Flow (cfs)", subtitle = "NF American River (water years)", caption="(@riverpeek) Data from USGS gage 1142700")
 
-ggsave(filename = "figs/nfa_2017_vs_current.png", width = 11, height = 8, dpi=300, bg = "white")
+#ggsave(filename = "figs/nfa_2017_vs_current.png", width = 11, height = 8, dpi=300, bg = "white")
 
 # find max
 n17 %>%
@@ -298,3 +299,4 @@ nnow %>%
   group_by(dowy) %>%
   summarize(maxflow = max(Flow_Inst)) %>%
   slice_max(order_by = maxflow, n=3)
+

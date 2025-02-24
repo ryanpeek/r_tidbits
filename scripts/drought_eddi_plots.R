@@ -37,7 +37,7 @@ get_eddi <- function(stdate, time_int, time_dur){
 
 # Get States --------------------------------------------------------------
 
-us_states <- c("Oregon", "Nevada", "California")
+us_states <- c("Oregon", "Nevada", "California", "Arizona")
 
 ne_states("United States of America", returnclass = "sf") %>%
   filter(
@@ -55,7 +55,7 @@ bb <- st_bbox(border)
 
 # set the time interval
 time_int <- "mn" # week: wk, month: mn
-time_dur <- 12 # two digit number
+time_dur <- 6 # two digit number
 
 ## TIME 1 --------------------------
 
@@ -101,7 +101,7 @@ eddi_df1 <- extract(eddi_dat1, vect(border), method="bilinear", xy=TRUE, ID=FALS
 ## TIME 2 --------------------------
 
 # date param
-stdate2 <- "20240715"
+stdate2 <- "20250219"
 
 # try function:
 eddi_dat2 <- get_eddi(stdate2, time_int = time_int, time_dur = time_dur)
@@ -153,7 +153,7 @@ patch1 <- (g1 + theme(legend.position = "none",
 # now add detals
 (final_plot <- patch1 +
   plot_annotation(title = "EDDI: Evaporative Demand Drought Index",
-                  caption =  "A measure of the atmospheric evaporative demand or 'the thirst of the atmosphere'. \nData: <https://downloads.psl.noaa.gov/Projects/EDDI/CONUS_archive/data/>  |  R. Peek, 2024",
+                  caption =  "A measure of the atmospheric evaporative demand or 'the thirst of the atmosphere'. \nData: <https://downloads.psl.noaa.gov/Projects/EDDI/CONUS_archive/data/>  |  R. Peek, 2025",
                   theme = theme(plot.title = element_text(family = 'Rockwell', size = 18, color = "white"),
                                 plot.caption = element_text('Rockwell', size=12, color="white"),
                                 plot.background = element_rect(color = "#252a32", fill = "#252a32"),

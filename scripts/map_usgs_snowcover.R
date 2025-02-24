@@ -1,6 +1,8 @@
 # USGS snow example
 # see here, by Althea Archer
 #https://waterdata.usgs.gov/blog/snow-tiles-demo/
+# SCI represents fraction of time that snow is present on the ground from January 1 through July 3 for each year in the time series.
+
 
 library(qs)
 library(sbtools) # used to download Sciencebase data
@@ -9,7 +11,7 @@ library(terra)
 library(fs)
 
 # Set up your global input folder name
-input_folder_name <- "data_raw/2023_snowtiles_demo"
+input_folder_name <- "data_raw/2024_snowtiles_demo"
 fs::dir_create(input_folder_name)
 
 
@@ -17,7 +19,7 @@ fs::dir_create(input_folder_name)
 # Download Data -----------------------------------------------------------
 
 # Download the snow cover index (SCI) raster
-for(yy in 2001:2020){
+for(yy in 2010:2025){
   # if files already exist, skip download
   file_in <- sprintf("%s/MOD10A2_SCI_%s.tif", input_folder_name, yy)
   if(!file.exists(file_in)){ # if files don't exist, download
@@ -27,8 +29,6 @@ for(yy in 2001:2020){
                                 overwrite_file = F)
   }
 }
-
-
 
 # Read In Data ------------------------------------------------------------
 
@@ -94,8 +94,6 @@ ggplot() +
   scico::scale_fill_scico(palette = "oslo", direction = 1, begin = 0.25)
 
 
-
-
 # Make Hex ----------------------------------------------------------------
 
 # library(geojsonsf)
@@ -144,7 +142,10 @@ SCI_hex_grid %>%
   geom_sf(aes(fill = mean_20yr),
           color = "black",
           size = 0.2) +
-  scale_fill_scico("20 yr snow", palette = "oslo", direction = 1, begin = 0.20, end = 1)
+  scale_fill_scico("SCI", palette = "oslo", direction = 1, begin = 0.20, end = 1) +
+  labs(title="SCI: Snow Cover Index", subtitle="Fraction of time that snow is present on the\n ground from January 1 through July 3 in a given year.\nData here represents the average\n over the last 15 years") +
+  theme(plot.background = element_rect(fill="black"),
+        title = element_text(family = "Roboto Slab", color = "white"))
 
 
 # Add Snowflake -----------------------------------------------------------
@@ -156,10 +157,10 @@ SCI_hex_grid |>
           color = "black",
           size = 0.2) +
   scale_fill_scico(palette = "oslo", direction = 1, begin = 0.20, end = 1) +
-  ggimage::geom_image(aes(image = sprintf("%s/snowMask.png", input_folder_name),
-                          x = st_coordinates(st_centroid(SCI_hex_grid))[,1],
-                          y = st_coordinates(st_centroid(SCI_hex_grid))[,2]),
-                      asp = 1.60, size = 0.015) +
+  #ggimage::geom_image(aes(image = sprintf("%s/snowMask.png", input_folder_name),
+  #                        x = st_coordinates(st_centroid(SCI_hex_grid))[,1],
+  #                        y = st_coordinates(st_centroid(SCI_hex_grid))[,2]),
+  #                    asp = 1.60, size = 0.015) +
   theme_void()+
   theme(plot.background = element_rect(fill = "#0A1927"),
         legend.text = element_text(color = "#ffffff"),

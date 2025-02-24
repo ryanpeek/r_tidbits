@@ -30,15 +30,15 @@ eu_rivers <- get_data(ptofile)
 
 # Crop to a Country -------------------
 
-youpick <- "Poland"
+youpick <- "Scotland"
 
-cntry <- rnaturalearth::ne_countries(country = youpick, returnclass = "sf") %>%
+cntry <- rnaturalearth::ne_countries(scale = 10, country = youpick, returnclass = "sf") %>%
   st_transform(4326)
 
 # make a bbox
 bbox <- st_bbox(cntry)
 bbox
-# plot(cntry$geometry)
+plot(cntry$geometry)
 
 # crop
 eu_rivs <- eu_rivers[cntry,]
@@ -47,17 +47,17 @@ eu_rivs <- eu_rivers[cntry,]
 
 # Pull Watersheds ---------------------------------------------------------
 
-db <- "/Users/rapeek/Documents/spatial_data/ATLAS/BasinATLAS_Data_v10.gdb/BasinATLAS_v10.gdb/"
-
-st_layers(db)
-
-# try level 6 first
-watersheds <- st_read(db, "BasinATLAS_v10_lev07")
-
-# crop to country
-watersheds_crop <- watersheds[eu_rivs,]
-
-mapview::mapview(watersheds_crop)
+# db <- "/Users/rapeek/Documents/spatial_data/ATLAS/BasinATLAS_Data_v10.gdb/BasinATLAS_v10.gdb/"
+#
+# st_layers(db)
+#
+# # try level 6 first
+# watersheds <- st_read(db, "BasinATLAS_v10_lev07")
+#
+# # crop to country
+# watersheds_crop <- watersheds[eu_rivs,]
+#
+# mapview::mapview(watersheds_crop)
 
 # Get HydroData River Widths -----------------------------------------------------------
 eu_rivs <- eu_rivs %>%
@@ -145,8 +145,8 @@ p
 library(tmap)
 library(tmaptools)
 
-tm_shape(cntry) +
-  tm_polygons(alpha=0, border.col = "gray20", lwd=7)+
+#tm_shape(cntry) +
+#  tm_polygons(alpha=0, border.col = "gray50", lwd=2)+
 tm_shape(eu_rivs) +
   tm_lines(lwd="ORD_STRA",
            col="ORD_STRA", palette="Blues",
