@@ -13,6 +13,7 @@ data_out/tahoe*
 data_raw/lt*
 data_raw/phalzer*
 data_raw/2023_snowtiles_demo*
+data_raw/2024_snowtiles_demo*
 data_raw/Amtrak_*
 data_raw/*parquet
 data_raw/*tif
