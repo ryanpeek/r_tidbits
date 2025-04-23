@@ -23,6 +23,8 @@ slides/*
 /slides/
 data_raw/*gpkg
 **/*.html
+docs/*.js
+docs/*css
 docs/*.html
 docs/teaching_R_01_files/
 *duckdb
