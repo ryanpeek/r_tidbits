@@ -22,9 +22,9 @@ data_raw/Full_Sp_Scores.csv
 slides/*
 /slides/
 data_raw/*gpkg
-**/*.html
-**/*.js
-**/*.css
+*.html
+*.js
+*.css
 docs/*.html
 docs/teaching_R_01_files/
 *duckdb
