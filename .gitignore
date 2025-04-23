@@ -26,5 +26,6 @@ data_raw/*gpkg
 *.js
 *.css
 docs/*.html
+docs/*.js
 docs/teaching_R_01_files/
 *duckdb
