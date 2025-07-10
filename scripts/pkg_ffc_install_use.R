@@ -1,7 +1,7 @@
 
 # install ffc
 
-# devtools::install_github('ceff-tech/ffc_api_client/ffcAPIClient')
+devtools::install_github('ceff-tech/ffc_api_client/ffcAPIClient')
 library(ffcAPIClient)
 library(tidyverse)
 
