@@ -19,6 +19,9 @@ pacman::p_load(tidyverse,
                lwgeom)
 options(tigris_use_cache = TRUE)
 
+# load data
+load("data_out/ca_flines.rda")
+
 
 # Fonts and Themes --------------------------------------------------------
 
@@ -45,7 +48,7 @@ ucd_gold2 <- "#FFBF00"
 # get state cnty boundaries
 ca <- tigris::states() |> filter(STUSPS=="CA")
 cnty <- tigris::counties(state="CA")
-
+st_crs(cnty)
 
 # Get Delta and Lake Tahoe ------------------------------------------------
 
@@ -56,8 +59,25 @@ library(deltamapr)
 
 # Get HUCS ----------------------------------------------------------------
 
+# get hardcopy:
+ca_hucs <- read_rds("data_raw/ca_huc8_wbd.rds") |>
+  rename("huc8"=HUC8) |>
+  rename("name"=Name)
+st_crs(ca_hucs)
+
 # get flowlines based on AOI
-ca_hucs <- nhdplusTools::get_huc(ca, type = "huc08")
+ca_hucs <- nhdplusTools::get_huc(AOI = ca, type = "huc08")
+
+# defaults to h12:
+ca_h12 <- get_huc(ca)
+ca_h10 <- get_huc(ca,type='huc10')
+ca_h10 <- ca_h10 |>
+  mutate(huc08=strtrim(huc10, 8), .before=huc10)
+# dissolve to ca_h8
+ca_h08 <-ms_dissolve(ca_h10, field = "huc08")
+
+# check: mapview
+mapview(ca_h08, col.regions="orange", lwd=3)+mapview(ca_h10, col.regions="maroon", lwd=1)
 
 # check if all same?
 all((st_geometry_type(ca_hucs)=="POLYGON")==TRUE)
@@ -79,11 +99,18 @@ ca_hucs_ls <- split(ca_hucs_distinct_s, ca_hucs_distinct$huc8)
 #map(ca_hucs_ls, ~dim(.x))
 
 # select some hucs for testing
-huc_sel <- ca_hucs_distinct %>% filter(grepl("North Fork American", name))
+huc_sel <- ca_hucs_distinct %>% filter(grepl("Lake Tahoe", name))
 
 # get lake tahoe water: H16050101, Reachcode: 16050101000339, Permanent ID: 44560536, GNIS_ID: 01654975, COMID outlet: 120053784
+tahoe <- get_waterbodies(AOI = huc_sel)
 tahoe <- get_waterbodies(id = 120053784)
 #plot(tahoe$geometry)
+
+# save for later
+write_rds(tahoe,"data_out/tahoe.rds")
+write_rds(ca_h10, "data_out/ca_huc10.rds")
+write_rds(ca_h12, "data_out/ca_huc12.rds")
+
 
 # TEST -----------------------------------------------------------------
 
@@ -227,6 +254,7 @@ tahoe <- get_waterbodies(id = 120053784)
 # save(ca_flines, file = "data_out/ca_flines.rda")
 
 load("data_out/ca_flines.rda")
+tahoe <- read_rds("data_out/tahoe.rds")
 
 # fetch some
 #ca_flines_1 <- map(ca_hucs_ls[1:5], safely(~nhdplusTools::get_nhdplus(AOI = .x, realization = "flowline", streamorder = 2)))
@@ -305,7 +333,7 @@ pt_c1 <- "#03F9E6" # rain
 
     # add dark theme without axis or grid
     hrbrthemes::theme_ft_rc(grid = FALSE, axis = FALSE) +
-    labs(caption = "R. Peek • NHD Outlets") +
+    labs(caption = "• NHD Outlets •") +
     theme(plot.title =
             element_text(family=font_title2, size = 20, hjust=0.5),
           plot.caption = element_text(family=font_title2, color="gray90", hjust=0.5),
@@ -325,10 +353,13 @@ gg3 <- gg2 + geom_image(
 gg3
 
 # save out
-ggsave(gg3, filename="figs/2026_cws_rivs_peek_ca_outlets_Yellow.pdf",
+ggsave(gg3, filename="figs/2026_cws_rivs_peek_ca_outlets_Yellow_no_tahoe.pdf",
        width = 8.5, height = 11,
        dpi=600, bg="transparent")
 
+ggsave(gg3, filename="figs/2026_cws_rivs_peek_ca_outlets_Yellow.tiff",
+       width = 8.5, height = 11,
+       dpi=300, bg="transparent")
 
 
 # White Rivers Background --------------------------------------------------------
@@ -378,7 +409,7 @@ ggsave(gg3, filename="figs/2026_cws_rivs_peek_ca_outlets_Yellow.pdf",
 
    # add dark theme without axis or grid
    hrbrthemes::theme_ft_rc(grid = FALSE, axis = FALSE) +
-   labs(caption = "R. Peek • NHD Outlets") +
+   labs(caption = "• NHD Outlets •") +
    theme(plot.title =
            element_text(family=font_title2, size = 20, hjust=0.5),
          plot.caption = element_text(family=font_title2, color="gray90", hjust=0.5),
@@ -398,7 +429,12 @@ gg5 <- gg4 + geom_image(
 gg5
 
 # save out
-ggsave(gg5, filename="figs/2026_cws_rivs_peek_ca_outlets_White.pdf",
+ggsave(gg5, filename="figs/2026_cws_rivs_peek_ca_outlets_White_no_tahoe.pdf",
+       width = 8.5, height = 11,
+       dpi=600, bg="transparent")
+
+
+ggsave(gg5, filename="figs/2026_cws_rivs_peek_ca_outlets_White.tiff",
        width = 8.5, height = 11,
        dpi=600, bg="transparent")
 

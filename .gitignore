@@ -29,3 +29,5 @@ docs/*.html
 docs/*.js
 docs/teaching_R_01_files/
 *duckdb
+.positai
+figs/*
