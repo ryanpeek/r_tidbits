@@ -29,12 +29,16 @@ get_daily_flow <- function(gage_no){
   pCode <- "00060" # 00060 is discharge parameter code
 
   # get NWIS daily data: CURRENT YEAR
-  dat <- readNWISdv(siteNumbers = siteNo,
-                    parameterCd = pCode)
+  dat <- read_waterdata_daily(monitoring_location_id = siteNo,
+                              parameter_code =  pCode,
+                              skipGeometry = TRUE)
+
+  dat <- dat |>   # drop cols
+    select(-c(last_modified:time_series_id)) |>
+    rename(Date=time)
   # add water year
   dat <- addWaterYear(dat)
-  # rename the columns
-  dat <- renameNWISColumns(dat)
+
 
   # save out
   write_csv(dat,
@@ -44,7 +48,7 @@ get_daily_flow <- function(gage_no){
 
 ## Run function -------------
 
-siteNo <- "11427000" # NF American River
+siteNo <- "USGS-11427000" # NF American River
 get_daily_flow(siteNo)
 
 # Clean and Viz -----------------------------------------------------------
@@ -69,15 +73,14 @@ df <- read_csv(glue("{file_recent$path}"))
 
 # clean AND RENAME
 df_clean <- df %>%
-  rename(date = Date, water_year=waterYear) %>%
+  rename(date = Date, water_year=waterYear, flow_cfs=value) %>%
   mutate(year = year(date), month = month(date),
          #water_year = year(date) + ifelse(month(date) >= 10, 1, 0),
          water_day = (date - as.Date(sprintf('%s-10-01', water_year)))) %>%
   group_by(water_year) %>%
   mutate(water_day = as.numeric(water_day - min(water_day) + 1),
-         Flow_cms = Flow * 0.0283168) %>%
-  ungroup() |>
-  select(site_no, date, month, water_year, water_day, Flow, Flow_cms, Flow_cd, agency_cd)
+         flow_cms = flow_cfs * 0.0283168) %>%
+  ungroup()
 
 
 # Water Stats -------------------------------------------------------------
@@ -86,14 +89,10 @@ library(FlowScreen)
 
 # select data of interest and make into time series
 df_ts <- df_clean %>%
-  select(site_no, date, Flow, Flow_cd, agency_cd) %>%
+  select(ID=monitoring_location_id, Date=date, Flow=flow_cms, SYM=statistic_id, FlowUnits=unit_of_measure) %>%
   as.data.frame() %>%
-  # convert to cms
-  mutate(Flow = Flow * 0.0283168,
-         PARAM = 1) %>%
-  # rename
-  rename(Date=date, ID=site_no, SYM=Flow_cd, Agency=agency_cd) %>%
-  select(ID, PARAM, Date, Flow, SYM, Agency) %>%
+  # add param
+  mutate(PARAM = 1, Agency="USGS") %>%
   create.ts()
 
 # use pk.cov function to calc center of volume
@@ -130,8 +129,7 @@ df_clean <- left_join(df_clean, wateRshedTools::ca_wytypes[,c(1,6,11)], by=c("wa
 # same as this:
 tst <- df_clean %>%
   group_by(water_year) %>%
-  summarize(totvol=cumsum(Flow_cms)/sum(Flow_cms)) %>%
-  bind_cols(., df_clean[,c(1:2, 5, 6:7, 10:11)])
+  mutate(totvol=cumsum(flow_cms)/sum(flow_cms))
 
 # check levels
 table(df_clean$sv_WYtype, useNA = "ifany")
@@ -171,7 +169,7 @@ df_drought <- left_join(df_drought, wateRshedTools::ca_wytypes[,c(1,6,11)], by=c
   geom_textpath(data=tst |> filter(water_year == 1991), aes(x=water_day, y=totvol, label=water_year), color="red4", vjust=1.3, hjust=0.4, text_smoothing = 20)+
   geom_textpath(data=tst |> filter(water_year == 2022), aes(x=water_day, y=totvol, label=water_year), color="maroon2", vjust=-0.2, hjust=0.45, text_smoothing = 30)+
     geom_textpath(data=tst |> filter(water_year == 1997), aes(x=water_day, y=totvol, label=water_year), color="cyan3", vjust=-0.2, hjust=0.5)+
-    ggdark::dark_theme_classic(base_family = "Roboto Condensed") +
+    #ggdark::dark_theme_classic() +
     theme(axis.text.x = element_text(angle=60, hjust=1))+
     scale_color_viridis_d("WY Type") +
     labs(x="Day of water year", y="Total Volume",
@@ -259,6 +257,11 @@ plotly::ggplotly(plot_cov)
 
 # facet
 plot_cov + facet_grid(~sv_WYtype)
+ggsave(filename = "figs/figure_nfa_center_vol_by_wyr.png",
+       dpi=200, width=10, height = 6.5)
+
+
+
 
 # Plot: high flows ------------------------------------------------------
 
