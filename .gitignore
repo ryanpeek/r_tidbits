@@ -31,3 +31,7 @@ docs/teaching_R_01_files/
 *duckdb
 .positai
 figs/*
+data_out/ca_flines.rda
+data_out/ca_huc10.rds
+data_out/ca_huc12.rds
+data_raw/calenviroscreen50results_f_070126.xlsx
